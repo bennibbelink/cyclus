@@ -68,9 +68,9 @@ jobs:
           echo "artifactPath=${HOME}/cyclus_coverage/html/" >> $GITHUB_ENV
         
       - name: Upload Coverage Report Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v2
         with:
-          name: code-coverage-report
+          name: cyclus-coverage-report
           path: ${{ env.artifactPath }}
 
       - name: Comment Coverage Summary to PR Discussion
@@ -88,21 +88,3 @@ jobs:
               repo: context.repo.repo,
               body: `${COMMENT_BODY}`
             })
-
-
-  deploy:
-    if: ${{ github.event_name == 'push' }}
-    needs: generate-report
-    permissions:
-      pages: write  
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: code-coverage-report
