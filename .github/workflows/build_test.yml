@@ -58,8 +58,6 @@ jobs:
         run: |
           apt install -y lcov
           lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.info
-      #    echo "COVERAGE_PREFIX=(${{ matrix.ubuntu_versions }}, ${{ matrix.pkg_mgr }})" >> "$GITHUB_ENV"
-      #    echo "COVERAGE_SUMMARY=$(lcov --summary ${HOME}/cyclus_coverage.info)" >> "$GITHUB_ENV"
           mkdir -p ${HOME}/cyclus_coverage/html
           genhtml ${HOME}/cyclus_coverage.info --output-directory ${HOME}/cyclus_coverage/html
         
