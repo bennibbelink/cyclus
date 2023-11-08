@@ -74,6 +74,7 @@ jobs:
           path: ${HOME}/cyclus_coverage/html/index.html
 
       - name: Comment Coverage Summary to PR Discussion
+        if: ${{ github.event_name == 'pull_request' }}
         uses: actions/github-script@v6
         env:
           COMMENT_BODY: '${{ env.COVERAGE_SUMMARY }}'
