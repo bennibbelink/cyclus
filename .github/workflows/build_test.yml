@@ -68,12 +68,13 @@ jobs:
           } >> "$GITHUB_ENV"
           mkdir -p ${HOME}/cyclus_coverage/html
           genhtml ${HOME}/cyclus_coverage.info --output-directory ${HOME}/cyclus_coverage/html
+          echo "artifactPath=${HOME}/cyclus_coverage/html/" >> $GITHUB_ENV
         
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v3
         with:
           name: code-coverage-report
-          path: "${HOME}/cyclus_coverage/html/"
+          path: ${{ env.artifactPath }}
 
       - name: Comment Coverage Summary to PR Discussion
         if: ${{ github.event_name == 'pull_request' }}
