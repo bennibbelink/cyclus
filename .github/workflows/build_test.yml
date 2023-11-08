@@ -62,9 +62,7 @@ jobs:
           {
             echo 'COVERAGE_SUMMARY<<EOF'
             echo "Code Coverage Summary (${{ matrix.ubuntu_versions}}, ${{ matrix.pkg_mgr }})"
-            echo "```"
             lcov --summary ${HOME}/cyclus_coverage.info
-            echo "```"
             echo EOF
           } >> "$GITHUB_ENV"
           mkdir -p ${HOME}/cyclus_coverage/html
