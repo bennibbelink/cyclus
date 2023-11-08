@@ -57,12 +57,12 @@ jobs:
       - name: Run LCOV
         run: |
           apt install -y lcov
-          lcov -c --rc lcov_branch_coverage=1 -d build/src -o coverage.info --no-external 
+          lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.info --no-external 
 
       - name: Report code coverage
         uses: zgosalvez/github-actions-report-lcov@v3
         with:
-          coverage-files: coverage.info
+          coverage-files: ${HOME}/cyclus_coverage.info
           minimum-coverage: 50
           artifact-name: code-coverage-report
           github-token: ${{ secrets.GITHUB_TOKEN }}
