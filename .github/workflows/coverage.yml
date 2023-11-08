@@ -91,7 +91,7 @@ jobs:
 
 
   deploy:
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'push' }}
     needs: generate-report
     permissions:
       pages: write  
