@@ -58,9 +58,6 @@ jobs:
         run: |
           apt install -y lcov && lcov --capture -d build/src -o coverage.info
 
-      - name: Setup LCOV
-        uses: hrishikesh-kadam/setup-lcov@v1
-
       - name: Report code coverage
         uses: zgosalvez/github-actions-report-lcov@v3
         with:
