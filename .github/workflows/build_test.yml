@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: code-coverage-report
-          path: ${HOME}/cyclus_coverage/html/
+          path: ${HOME}/cyclus_coverage/html/index.html
 
       - name: Comment Coverage Summary to PR Discussion
         uses: actions/github-script@v6
