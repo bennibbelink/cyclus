@@ -63,7 +63,7 @@ jobs:
       - name: Install lcov for conda
         if: matrix.pkg_mgr == 'conda'
         run: |
-            mamba install -y lcov
+            mamba install -c conda-forge -y lcov
             echo "GCOV=/opt/conda/bin/x86_64-conda-linux-gnu-gcov" >> "$GITHUB_ENV"
 
       - name: Generate Coverage Report
