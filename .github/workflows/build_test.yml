@@ -69,7 +69,6 @@ jobs:
       - name: Generate Coverage Report
         run: |
           lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.info --gcov-tool ${{ env.GCOV }}
-          lcov --remove ${HOME}/cyclus_coverage.info "/usr/*"
           mkdir -p ${HOME}/cyclus_coverage/html
           genhtml ${HOME}/cyclus_coverage.info --output-directory ${HOME}/cyclus_coverage/html
           echo "artifactPath=${HOME}/cyclus_coverage/html/" >> $GITHUB_ENV
