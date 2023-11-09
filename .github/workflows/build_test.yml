@@ -84,21 +84,3 @@ jobs:
         with:
           name: cyclus-coverage-report-${{ matrix.ubuntu_versions }}-${{ matrix.pkg_mgr }}
           path: ${{ env.artifactPath }}
-
-      - name: Comment Coverage Summary to PR Discussion
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/github-script@v6
-        env:
-          COMMENT_BODY: '${{ env.COVERAGE_SUMMARY }}'
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            const { COMMENT_BODY } = process.env;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `**Code Coverage Summary (${{ matrix.ubuntu_versions }}, ${{ matrix.pkg_mgr }})** 
-              **Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})**
-              ${COMMENT_BODY}`
-            })
