@@ -57,13 +57,13 @@ jobs:
       - name: Install lcov for apt
         if: matrix.pkg_mgr == 'apt'
         run: |
-          apt update --fix-missing && apt install -y lcov
+          apt update --fix-missing && apt install -y lcov curl
           echo "GCOV=/usr/bin/gcov" >> "$GITHUB_ENV"
       
       - name: Install lcov for conda
         if: matrix.pkg_mgr == 'conda'
         run: |
-            mamba install -c conda-forge -y lcov
+            mamba install -c conda-forge -y lcov curl
             echo "GCOV=/opt/conda/bin/x86_64-conda-linux-gnu-gcov" >> "$GITHUB_ENV"
 
       - name: Generate Coverage Report
