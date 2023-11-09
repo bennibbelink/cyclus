@@ -78,7 +78,7 @@ jobs:
       - name: Upload Coverage Report Artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          name: cyclus-coverage-report
+          name: cyclus-coverage-report-${{ matrix.ubuntu-versions }}-${{ matrix.pkg_mgr }}
           path: ${{ env.artifactPath }}
 
       - name: Comment Coverage Summary to PR Discussion
