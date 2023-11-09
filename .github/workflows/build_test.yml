@@ -85,9 +85,7 @@ jobs:
         with:
           flag-name: ${{ join(matrix.*, '-') }}
           parallel: true
-          format: lcov
           file: ${HOME}/cyclus_coverage.info
-          base-path: build/src
 
   finish-coveralls:
     needs: build-and-test
