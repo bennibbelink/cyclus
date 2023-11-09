@@ -60,7 +60,7 @@ jobs:
 
       - name: Initial Coverage Report
         run: |
-          lcov -c --rc lcov_branch_coverage=1 --initial -d build/src -o ${HOME}/cyclus_initial_coverage.info --gcov-tool ${{ env.GCOV }}
+          lcov -c --rc lcov_branch_coverage=1 --initial -d build/src -o ${HOME}/cyclus_initial_coverage.lcov --gcov-tool ${{ env.GCOV }}
 
       - name: Cyclus Unit Tests
         run: |
@@ -72,11 +72,12 @@ jobs:
 
       - name: Generate Coverage Report
         run: |
-          lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.info --gcov-tool ${{ env.GCOV }}
-          lcov --add-tracefile  ${HOME}/cyclus_initial_coverage.info --add-tracefile  ${HOME}/cyclus_coverage.info -o cyclus_total_coverage.info
+          lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.lcov --gcov-tool ${{ env.GCOV }}
+          lcov --add-tracefile  ${HOME}/cyclus_initial_coverage.lcov --add-tracefile  ${HOME}/cyclus_coverage.lcov -o cyclus_total_coverage.lcov
           mkdir -p ${HOME}/cyclus_coverage/html
-          genhtml ${HOME}/cyclus_total_coverage.info --output-directory ${HOME}/cyclus_coverage/html
+          genhtml ${HOME}/cyclus_total_coverage.lcov --output-directory ${HOME}/cyclus_coverage/html
           echo "artifactPath=${HOME}/cyclus_coverage/html/" >> $GITHUB_ENV
+          cat ${HOME}/cyclus_total_coverage.lcov
         
       - name: Upload Coverage Report Artifact
         uses: actions/upload-pages-artifact@v2
