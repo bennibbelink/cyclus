@@ -60,7 +60,7 @@ jobs:
       
       - name: Install lcov for conda
         if: ${{ matrix.pkg_mgr }} == 'conda'
-        run: mamba install -y lcov
+        run: mamba install -c conda-forge -y lcov
 
       - name: Generate Coverage Report
         run: |
