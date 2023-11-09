@@ -87,5 +87,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `Code Coverage Summary (${{ matrix.ubuntu_versions }}, ${{ matrix.pkg_mgr }}) ${COMMENT_BODY}`
+              body: `**Code Coverage Summary (${{ matrix.ubuntu_versions }}, ${{ matrix.pkg_mgr }})** 
+              Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+              ${COMMENT_BODY}`
             })
