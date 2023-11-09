@@ -55,13 +55,13 @@ jobs:
           cd tests && python -m pytest --ignore test_main.py
 
       - name: Install lcov for apt
-        if: "${{ matrix.pkg_mgr }}" == "apt"
+        if: '${{ matrix.pkg_mgr }}' == 'apt'
         run: |
           apt update --fix-missing && apt install -y lcov
           echo "GCOV=/usr/bin/gcov" >> "$GITHUB_ENV"
       
       - name: Install lcov for conda
-        if: "${{ matrix.pkg_mgr }}" == "conda"
+        if: '${{ matrix.pkg_mgr }}' == 'conda'
         run: |
             mamba install -y lcov
             echo "GCOV=/opt/conda/bin/x86_64-conda-linux-gnu-gcov" >> "$GITHUB_ENV"
