@@ -85,7 +85,6 @@ jobs:
         with:
           flag-name: ${{ join(matrix.*, '-') }}
           parallel: true
-          file: ${HOME}/cyclus_coverage.info
 
   finish-coveralls:
     needs: build-and-test
