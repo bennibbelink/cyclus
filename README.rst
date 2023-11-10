@@ -1,5 +1,8 @@
-Cyclus
+Cyclus 
 ------
+
+.. image:: https://coveralls.io/repos/github/bennibbelink/cyclus/badge.svg?branch=main
+  :target: https://coveralls.io/github/bennibbelink/cyclus?branch=main
 
 The Cyclus fuel cycle simulator is an agent-based and extensible framework for
 modeling the flow of material through future nuclear fuel cycles.  For more
@@ -19,8 +22,6 @@ main              |cyclus_main|       |cycamore_main|      |cymetric_main|
 .. |cyclus_main| image:: https://circleci.com/gh/cyclus/cyclus/tree/main.png?&amp;circle-token= 35d82ba8661d4f32e0f084b9d8a2388fa62c0262
 .. |cycamore_main| image:: https://circleci.com/gh/cyclus/cycamore/tree/main.png?&amp;circle-token= 333211090d5d5a15110eed1adbe079a6f3a4a704
 .. |cymetric_main| image:: https://circleci.com/gh/cyclus/cymetric/tree/main.png?&amp;circle-token= 72639b59387f077973af98e7ce72996eac18b96c
-.. image:: https://coveralls.io/repos/github/bennibbelink/cyclus/badge.svg?branch=main
-  :target: https://coveralls.io/github/bennibbelink/cyclus?branch=main
 
 
 
