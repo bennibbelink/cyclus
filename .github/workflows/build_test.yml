@@ -24,12 +24,12 @@ jobs:
       fail-fast: false
       matrix:
         ubuntu_versions : [
-          20.04,
+          # 20.04,
           22.04,
           ]
         pkg_mgr : [
             apt,
-            conda,
+            # conda,
         ]
     
     container:
@@ -60,7 +60,7 @@ jobs:
 
       - name: Initial Coverage Report
         run: |
-          lcov -c --rc lcov_branch_coverage=1 --initial -d build/src -o ${HOME}/cyclus_initial_coverage.info --gcov-tool ${{ env.GCOV }}
+          lcov -c --rc lcov_branch_coverage=1 --initial -d ${PWD}/build/src -o ${HOME}/cyclus_initial_coverage.info --gcov-tool ${{ env.GCOV }}
 
       - name: Cyclus Unit Tests
         run: |
@@ -72,15 +72,15 @@ jobs:
 
       - name: Generate Coverage Report
         run: |
-          cd ..
           pwd
-          lcov -c --rc lcov_branch_coverage=1 -d build/src -o ${HOME}/cyclus_coverage.info --gcov-tool ${{ env.GCOV }}
-          lcov --add-tracefile  ${HOME}/cyclus_initial_coverage.info --add-tracefile  ${HOME}/cyclus_coverage.info -o cyclus_total_coverage.info
+          ls
+          lcov -c --rc lcov_branch_coverage=1 -d ${PWD}/build/src -o ${HOME}/cyclus_coverage.info --gcov-tool ${{ env.GCOV }}
+          lcov --add-tracefile ${HOME}/cyclus_initial_coverage.info --add-tracefile  ${HOME}/cyclus_coverage.info -o ${HOME}/cyclus_total_coverage.info
           mkdir -p ${HOME}/cyclus_coverage/html
+          ls ${HOME}
           genhtml ${HOME}/cyclus_total_coverage.info --output-directory ${HOME}/cyclus_coverage/html
           echo "artifactPath=${HOME}/cyclus_coverage/html/" >> $GITHUB_ENV
           cat ${HOME}/cyclus_total_coverage.info
-          cp ${HOME}/cyclus_total_coverage.info ${HOME}/cyclus_total_coverage.lcov
         
       - name: Upload Coverage Report Artifact
         uses: actions/upload-pages-artifact@v2
@@ -93,6 +93,8 @@ jobs:
         with:
           flag-name: ${{ join(matrix.*, '-') }}
           parallel: true
+          file: ${HOME}/cyclus_total_coverage.info
+          format: lcov
 
   finish-coveralls:
     needs: build-and-test
