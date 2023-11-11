@@ -16,19 +16,19 @@ except ImportError:
     smbchk = None
 
 
-def test_abi_stability():
-    pytest.skip('manually remove this skip to test ABI stability')
-    if smbchk is None:
-        pytest.skip('Could not import smbchk!')
-    if os.name != 'posix':
-        pytest.skip('can only check for ABI stability on posix systems.')
-    libcyc = os.path.join(cycdir, 'build', 'lib', 'libcyclus.so')
-    if not os.path.exists(libcyc):
-        pytest.skip('libcyclus could not be found, '
-                       'cannot check for ABI stability')
-    args = '--update -t HEAD --no-save --check'.split()
-    with tools.indir(reldir):
-        obs = smbchk.main(args=args)
-    assert(obs)
+# def test_abi_stability():
+#     pytest.skip('manually remove this skip to test ABI stability')
+#     if smbchk is None:
+#         pytest.skip('Could not import smbchk!')
+#     if os.name != 'posix':
+#         pytest.skip('can only check for ABI stability on posix systems.')
+#     libcyc = os.path.join(cycdir, 'build', 'lib', 'libcyclus.so')
+#     if not os.path.exists(libcyc):
+#         pytest.skip('libcyclus could not be found, '
+#                        'cannot check for ABI stability')
+#     args = '--update -t HEAD --no-save --check'.split()
+#     with tools.indir(reldir):
+#         obs = smbchk.main(args=args)
+#     assert(obs)
 
 

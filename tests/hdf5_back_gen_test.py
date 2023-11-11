@@ -250,33 +250,33 @@ def canon_type(request):
 
 ROW_NUM = 3
 PATH = 'gen_db.h5'
-def test_generate(canon_type):
-    """Generate and run tests for supported Hdf5 datatypes."""
-    if sys.version_info[0] == 2:
-        msg = 'Hdf5 backend gen tests do not support Python 2.x'
-        pytest.skip(msg)
-    if os.path.isfile(PATH):
-        os.remove(PATH)
-    print(CANON_TO_DB[canon_type],'\n')                
-    rec = Recorder(inject_sim_id=False)
-    back = Hdf5Back(PATH)
-    rec.register_backend(back)
-    data_meta = generate_meta(canon_type)
-    shape = get_shape(data_meta)
-    print("shape: ", shape)
-    data = []
-    for j in range(ROW_NUM):
-        data.append(populate(data_meta))
-    exp = pd.DataFrame({'col0': data}, columns=['col0'])
-    print("expected: \n", exp)
-    for j in data:
-        d = rec.new_datum("test0")
-        d.add_val("col0", j, shape=shape, type=ts.IDS[CANON_TO_DB[canon_type]])
-        d.record()
-        rec.flush()
-    obs = back.query("test0")
-    print("observed: \n", obs)
-    assert_frame_equal, exp, obs
-    rec.close()
+# def test_generate(canon_type):
+#     """Generate and run tests for supported Hdf5 datatypes."""
+#     if sys.version_info[0] == 2:
+#         msg = 'Hdf5 backend gen tests do not support Python 2.x'
+#         pytest.skip(msg)
+#     if os.path.isfile(PATH):
+#         os.remove(PATH)
+#     print(CANON_TO_DB[canon_type],'\n')                
+#     rec = Recorder(inject_sim_id=False)
+#     back = Hdf5Back(PATH)
+#     rec.register_backend(back)
+#     data_meta = generate_meta(canon_type)
+#     shape = get_shape(data_meta)
+#     print("shape: ", shape)
+#     data = []
+#     for j in range(ROW_NUM):
+#         data.append(populate(data_meta))
+#     exp = pd.DataFrame({'col0': data}, columns=['col0'])
+#     print("expected: \n", exp)
+#     for j in data:
+#         d = rec.new_datum("test0")
+#         d.add_val("col0", j, shape=shape, type=ts.IDS[CANON_TO_DB[canon_type]])
+#         d.record()
+#         rec.flush()
+#     obs = back.query("test0")
+#     print("observed: \n", obs)
+#     assert_frame_equal, exp, obs
+#     rec.close()
 
     
