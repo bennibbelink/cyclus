@@ -92,7 +92,7 @@ jobs:
           parallel: true
           file: ${HOME}/src_coverage.info
           format: lcov
-          compare-ref: "main"
+          compare-ref: main
 
   finish-coveralls:
     needs: build-and-test
