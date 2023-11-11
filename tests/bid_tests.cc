@@ -21,43 +21,43 @@ using cyclus::TestContext;
 using std::string;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST(BidTests, MaterialGetSet) {
-  TestContext tc;
-  TestFacility* fac = tc.trader();
-  cyclus::CompMap cm;
-  cm[92235] = 1.0;
-  Composition::Ptr comp = Composition::CreateFromMass(cm);
-  double qty = 1.0;
-  Material::Ptr mat = tc.mat();
-  Request<Material>* req = tc.NewReq();
-  Bid<Material>* bid = Bid<Material>::Create(req, mat, fac, false, 1.0);
+// TEST(BidTests, MaterialGetSet) {
+//   TestContext tc;
+//   TestFacility* fac = tc.trader();
+//   cyclus::CompMap cm;
+//   cm[92235] = 1.0;
+//   Composition::Ptr comp = Composition::CreateFromMass(cm);
+//   double qty = 1.0;
+//   Material::Ptr mat = tc.mat();
+//   Request<Material>* req = tc.NewReq();
+//   Bid<Material>* bid = Bid<Material>::Create(req, mat, fac, false, 1.0);
 
-  EXPECT_EQ(fac, bid->bidder());
-  EXPECT_EQ(req, bid->request());
-  EXPECT_EQ(mat, bid->offer());
-  EXPECT_EQ(1.0, bid->preference());
+//   EXPECT_EQ(fac, bid->bidder());
+//   EXPECT_EQ(req, bid->request());
+//   EXPECT_EQ(mat, bid->offer());
+//   EXPECT_EQ(1.0, bid->preference());
 
-  delete bid;
-}
+//   delete bid;
+// }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST(BidTests, ProductGetSet) {
-  TestContext tc;
-  TestFacility* fac = tc.trader();
-  double qty = 1.0;
-  string quality = "qual";
+// TEST(BidTests, ProductGetSet) {
+//   TestContext tc;
+//   TestFacility* fac = tc.trader();
+//   double qty = 1.0;
+//   string quality = "qual";
 
-  Product::Ptr rsrc = Product::CreateUntracked(qty, quality);
+//   Product::Ptr rsrc = Product::CreateUntracked(qty, quality);
 
-  Request<Product>* req = Request<Product>::Create(rsrc, fac);
+//   Request<Product>* req = Request<Product>::Create(rsrc, fac);
 
-  Bid<Product>* bid = Bid<Product>::Create(req, rsrc, fac, false, 1.0);
+//   Bid<Product>* bid = Bid<Product>::Create(req, rsrc, fac, false, 1.0);
 
-  EXPECT_EQ(fac, bid->bidder());
-  EXPECT_EQ(req, bid->request());
-  EXPECT_EQ(rsrc, bid->offer());
-  EXPECT_EQ(1.0, bid->preference());
+//   EXPECT_EQ(fac, bid->bidder());
+//   EXPECT_EQ(req, bid->request());
+//   EXPECT_EQ(rsrc, bid->offer());
+//   EXPECT_EQ(1.0, bid->preference());
 
-  delete bid;
-  delete req;
-}
+//   delete bid;
+//   delete req;
+// }

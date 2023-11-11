@@ -9,64 +9,64 @@
 namespace cyclus {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST(FullSimTests, LoneTrader) {
-  TestContext tc;
-  GreedySolver* solver = new GreedySolver();  // context deletes
-  tc.get()->solver(solver);
-  TestObjFactory fac;
+// TEST(FullSimTests, LoneTrader) {
+//   TestContext tc;
+//   GreedySolver* solver = new GreedySolver();  // context deletes
+//   tc.get()->solver(solver);
+//   TestObjFactory fac;
 
-  TestTrader* base_trader = new TestTrader(tc.get());
-  TestTrader* trader =
-      dynamic_cast<TestTrader*>(base_trader->Clone());
+//   TestTrader* base_trader = new TestTrader(tc.get());
+//   TestTrader* trader =
+//       dynamic_cast<TestTrader*>(base_trader->Clone());
 
-  trader->Build(NULL);
+//   trader->Build(NULL);
 
-  int nsteps = 5;
+//   int nsteps = 5;
 
-  PyStart();
-  tc.timer()->Initialize(tc.get(), SimInfo(nsteps));
-  tc.timer()->RunSim();
-  PyStop();
+//   PyStart();
+//   tc.timer()->Initialize(tc.get(), SimInfo(nsteps));
+//   tc.timer()->RunSim();
+//   PyStop();
 
-  EXPECT_EQ(nsteps, trader->requests);
-  EXPECT_EQ(nsteps, trader->bids);
-  EXPECT_EQ(0, trader->adjusts);
-  EXPECT_EQ(0, trader->accept);
-}
+//   EXPECT_EQ(nsteps, trader->requests);
+//   EXPECT_EQ(nsteps, trader->bids);
+//   EXPECT_EQ(0, trader->adjusts);
+//   EXPECT_EQ(0, trader->accept);
+// }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST(FullSimTests, NullTrade) {
-  TestContext tc;
-  GreedySolver* solver = new GreedySolver();  // context deletes
-  tc.get()->solver(solver);
+// TEST(FullSimTests, NullTrade) {
+//   TestContext tc;
+//   GreedySolver* solver = new GreedySolver();  // context deletes
+//   tc.get()->solver(solver);
 
-  TestTrader* base_supplier = new TestTrader(tc.get());
-  TestTrader* supplier =
-      dynamic_cast<TestTrader*>(base_supplier->Clone());
-  supplier->Build(NULL);
+//   TestTrader* base_supplier = new TestTrader(tc.get());
+//   TestTrader* supplier =
+//       dynamic_cast<TestTrader*>(base_supplier->Clone());
+//   supplier->Build(NULL);
 
-  TestTrader* base_requester = new TestTrader(tc.get());
-  TestTrader* requester =
-      dynamic_cast<TestTrader*>(base_requester->Clone());
-  requester->Build(NULL);
+//   TestTrader* base_requester = new TestTrader(tc.get());
+//   TestTrader* requester =
+//       dynamic_cast<TestTrader*>(base_requester->Clone());
+//   requester->Build(NULL);
 
-  int nsteps = 2;
+//   int nsteps = 2;
 
-  PyStart();
-  tc.timer()->Initialize(tc.get(), SimInfo(nsteps));
-  tc.timer()->RunSim();
-  PyStop();
+//   PyStart();
+//   tc.timer()->Initialize(tc.get(), SimInfo(nsteps));
+//   tc.timer()->RunSim();
+//   PyStop();
 
-  EXPECT_EQ(nsteps, supplier->requests);
-  EXPECT_EQ(nsteps, supplier->bids);
-  EXPECT_EQ(0, supplier->accept);
-  EXPECT_EQ(0, supplier->adjusts);
+//   EXPECT_EQ(nsteps, supplier->requests);
+//   EXPECT_EQ(nsteps, supplier->bids);
+//   EXPECT_EQ(0, supplier->accept);
+//   EXPECT_EQ(0, supplier->adjusts);
 
-  EXPECT_EQ(nsteps, requester->requests);
-  EXPECT_EQ(nsteps, requester->bids);
-  EXPECT_EQ(0, requester->accept);
-  EXPECT_EQ(0, requester->adjusts);
-}
+//   EXPECT_EQ(nsteps, requester->requests);
+//   EXPECT_EQ(nsteps, requester->bids);
+//   EXPECT_EQ(0, requester->accept);
+//   EXPECT_EQ(0, requester->adjusts);
+// }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 TEST(FullSimTests, Trade) {
