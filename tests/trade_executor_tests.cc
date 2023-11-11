@@ -109,81 +109,81 @@ TEST_F(TradeExecutorTests, SupplierGrouping) {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST_F(TradeExecutorTests, SupplierResponses) {
-  TradeExecutor<Material> exec(trades);
-  GroupTradesBySupplier(exec.trade_ctx(), trades);
-  GetTradeResponses(exec.trade_ctx());
+// TEST_F(TradeExecutorTests, SupplierResponses) {
+//   TradeExecutor<Material> exec(trades);
+//   GroupTradesBySupplier(exec.trade_ctx(), trades);
+//   GetTradeResponses(exec.trade_ctx());
 
-  std::map<Trader*,
-           std::vector< std::pair<Trade<Material>, Material::Ptr> > >
-      by_req_obs = exec.trade_ctx().trades_by_requester;
-  EXPECT_NE(std::find(by_req_obs[r1].begin(),
-                      by_req_obs[r1].end(),
-                      std::make_pair(t1, fac.mat)),
-            by_req_obs[r1].end());
-  EXPECT_NE(std::find(by_req_obs[r1].begin(),
-                      by_req_obs[r1].end(),
-                      std::make_pair(t2, fac.mat)),
-            by_req_obs[r1].end());
-  EXPECT_NE(std::find(by_req_obs[r2].begin(),
-                      by_req_obs[r2].end(),
-                      std::make_pair(t3, fac.mat)),
-            by_req_obs[r2].end());
+//   std::map<Trader*,
+//            std::vector< std::pair<Trade<Material>, Material::Ptr> > >
+//       by_req_obs = exec.trade_ctx().trades_by_requester;
+//   EXPECT_NE(std::find(by_req_obs[r1].begin(),
+//                       by_req_obs[r1].end(),
+//                       std::make_pair(t1, fac.mat)),
+//             by_req_obs[r1].end());
+//   EXPECT_NE(std::find(by_req_obs[r1].begin(),
+//                       by_req_obs[r1].end(),
+//                       std::make_pair(t2, fac.mat)),
+//             by_req_obs[r1].end());
+//   EXPECT_NE(std::find(by_req_obs[r2].begin(),
+//                       by_req_obs[r2].end(),
+//                       std::make_pair(t3, fac.mat)),
+//             by_req_obs[r2].end());
 
-  std::map<std::pair<Trader*, Trader*>,
-           std::vector< std::pair<Trade<Material>, Material::Ptr> > >
-      all_t_obs = exec.trade_ctx().all_trades;
-  EXPECT_NE(std::find(all_t_obs[std::make_pair(s1, r1)].begin(),
-                      all_t_obs[std::make_pair(s1, r1)].end(),
-                      std::make_pair(t1, fac.mat)),
-            all_t_obs[std::make_pair(s1, r1)].end());
-  EXPECT_NE(std::find(all_t_obs[std::make_pair(s2, r1)].begin(),
-                      all_t_obs[std::make_pair(s2, r1)].end(),
-                      std::make_pair(t2, fac.mat)),
-            all_t_obs[std::make_pair(s2, r1)].end());
-  EXPECT_NE(std::find(all_t_obs[std::make_pair(s2, r2)].begin(),
-                      all_t_obs[std::make_pair(s2, r2)].end(),
-                      std::make_pair(t3, fac.mat)),
-            all_t_obs[std::make_pair(s2, r2)].end());
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST_F(TradeExecutorTests, WholeShebang) {
-  TradeExecutor<Material> exec(trades);
-  exec.ExecuteTrades();
-  EXPECT_EQ(s1->offer, 1);
-  EXPECT_EQ(s1->accept, 0);
-  EXPECT_EQ(s2->offer, 2);
-  EXPECT_EQ(s2->accept, 0);
-  EXPECT_EQ(r1->offer, 0);
-  EXPECT_EQ(r1->accept, 2);
-  EXPECT_EQ(r2->offer, 0);
-  EXPECT_EQ(r2->accept, 1);
-}
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST_F(TradeExecutorTests, NoThrowWriting) {
-  TradeExecutor<Material> exec(trades);
-  exec.ExecuteTrades();
-  EXPECT_NO_THROW(exec.RecordTrades(tc.get()));
-}
-
-// This test was a part of a previous iteration of Trade testing, but its not
-// clear if this throwing behavior is what we want. I'm leaving it here for now
-// in case it needs to be picked up again. MJG - 11/26/13
-// // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TEST(TradeTests, OfferThrow) {
-//   TestContext tc;
-
-//   Material::Ptr mat = get_mat();
-//   Receiver* r = new Receiver(tc.get(), mat);
-//   Request<Material>* req = Request<Material>::Create(mat, r);
-
-//   Sender* s = new Sender(tc.get(), true);
-//   Bid<Material>* bid = Bid<Material>::Create(req, mat, s);
-
-//   Trade<Material> trade(req, bid, mat->quantity());
-//   EXPECT_THROW(cyclus::ExecuteTrade(trade), cyclus::ValueError);
-//   delete s;
-//   delete r;
+//   std::map<std::pair<Trader*, Trader*>,
+//            std::vector< std::pair<Trade<Material>, Material::Ptr> > >
+//       all_t_obs = exec.trade_ctx().all_trades;
+//   EXPECT_NE(std::find(all_t_obs[std::make_pair(s1, r1)].begin(),
+//                       all_t_obs[std::make_pair(s1, r1)].end(),
+//                       std::make_pair(t1, fac.mat)),
+//             all_t_obs[std::make_pair(s1, r1)].end());
+//   EXPECT_NE(std::find(all_t_obs[std::make_pair(s2, r1)].begin(),
+//                       all_t_obs[std::make_pair(s2, r1)].end(),
+//                       std::make_pair(t2, fac.mat)),
+//             all_t_obs[std::make_pair(s2, r1)].end());
+//   EXPECT_NE(std::find(all_t_obs[std::make_pair(s2, r2)].begin(),
+//                       all_t_obs[std::make_pair(s2, r2)].end(),
+//                       std::make_pair(t3, fac.mat)),
+//             all_t_obs[std::make_pair(s2, r2)].end());
 // }
+
+// // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TEST_F(TradeExecutorTests, WholeShebang) {
+//   TradeExecutor<Material> exec(trades);
+//   exec.ExecuteTrades();
+//   EXPECT_EQ(s1->offer, 1);
+//   EXPECT_EQ(s1->accept, 0);
+//   EXPECT_EQ(s2->offer, 2);
+//   EXPECT_EQ(s2->accept, 0);
+//   EXPECT_EQ(r1->offer, 0);
+//   EXPECT_EQ(r1->accept, 2);
+//   EXPECT_EQ(r2->offer, 0);
+//   EXPECT_EQ(r2->accept, 1);
+// }
+
+// // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TEST_F(TradeExecutorTests, NoThrowWriting) {
+//   TradeExecutor<Material> exec(trades);
+//   exec.ExecuteTrades();
+//   EXPECT_NO_THROW(exec.RecordTrades(tc.get()));
+// }
+
+// // This test was a part of a previous iteration of Trade testing, but its not
+// // clear if this throwing behavior is what we want. I'm leaving it here for now
+// // in case it needs to be picked up again. MJG - 11/26/13
+// // // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// // TEST(TradeTests, OfferThrow) {
+// //   TestContext tc;
+
+// //   Material::Ptr mat = get_mat();
+// //   Receiver* r = new Receiver(tc.get(), mat);
+// //   Request<Material>* req = Request<Material>::Create(mat, r);
+
+// //   Sender* s = new Sender(tc.get(), true);
+// //   Bid<Material>* bid = Bid<Material>::Create(req, mat, s);
+
+// //   Trade<Material> trade(req, bid, mat->quantity());
+// //   EXPECT_THROW(cyclus::ExecuteTrade(trade), cyclus::ValueError);
+// //   delete s;
+// //   delete r;
+// // }

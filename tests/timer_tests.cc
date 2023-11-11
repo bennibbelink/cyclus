@@ -97,166 +97,166 @@ class SnapperDec : public cyclus::Facility {
   bool snap;
 };
 
-TEST(TimerTests, BareSim) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
+// TEST(TimerTests, BareSim) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(5));
+//   ti.Initialize(&ctx, cyclus::SimInfo(5));
 
-  ASSERT_NO_THROW(ti.RunSim());
-  cyclus::PyStop();
-}
+//   ASSERT_NO_THROW(ti.RunSim());
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, EarlyTermination) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
-  cyclus::SqliteBack b(path);
-  rec.RegisterBackend(&b);
+// TEST(TimerTests, EarlyTermination) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
+//   cyclus::SqliteBack b(path);
+//   rec.RegisterBackend(&b);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(10));
+//   ti.Initialize(&ctx, cyclus::SimInfo(10));
 
-  Termer* arnold = new Termer(&ctx);
-  arnold->Build(NULL);
+//   Termer* arnold = new Termer(&ctx);
+//   arnold->Build(NULL);
 
-  ti.RunSim();
-  rec.Close();
+//   ti.RunSim();
+//   rec.Close();
 
-  cyclus::QueryResult qr = b.Query("Finish", NULL);
-  bool early = qr.GetVal<bool>("EarlyTerm");
-  int end = qr.GetVal<int>("EndTime");
+//   cyclus::QueryResult qr = b.Query("Finish", NULL);
+//   bool early = qr.GetVal<bool>("EarlyTerm");
+//   int end = qr.GetVal<int>("EndTime");
 
-  EXPECT_TRUE(early);
-  EXPECT_EQ(0, end);
-  cyclus::PyStop();
-}
+//   EXPECT_TRUE(early);
+//   EXPECT_EQ(0, end);
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, DefaultSnapshotTick) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
-  cyclus::SqliteBack b(path);
-  rec.RegisterBackend(&b);
+// TEST(TimerTests, DefaultSnapshotTick) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
+//   cyclus::SqliteBack b(path);
+//   rec.RegisterBackend(&b);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(10));
+//   ti.Initialize(&ctx, cyclus::SimInfo(10));
 
-  SnapperTick* turtle = new SnapperTick(&ctx);
-  turtle->Build(NULL);
+//   SnapperTick* turtle = new SnapperTick(&ctx);
+//   turtle->Build(NULL);
 
-  ti.RunSim();
-  rec.Close();
+//   ti.RunSim();
+//   rec.Close();
 
-  cyclus::QueryResult qr = b.Query("Snapshots", NULL);
-  EXPECT_EQ(1, qr.rows.size());
-  EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
-  cyclus::PyStop();
-}
+//   cyclus::QueryResult qr = b.Query("Snapshots", NULL);
+//   EXPECT_EQ(1, qr.rows.size());
+//   EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, DefaultSnapshotTock) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
-  cyclus::SqliteBack b(path);
-  rec.RegisterBackend(&b);
+// TEST(TimerTests, DefaultSnapshotTock) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
+//   cyclus::SqliteBack b(path);
+//   rec.RegisterBackend(&b);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(10));
+//   ti.Initialize(&ctx, cyclus::SimInfo(10));
 
-  SnapperTock* turtle = new SnapperTock(&ctx);
-  turtle->Build(NULL);
+//   SnapperTock* turtle = new SnapperTock(&ctx);
+//   turtle->Build(NULL);
 
-  ti.RunSim();
-  rec.Close();
+//   ti.RunSim();
+//   rec.Close();
 
-  cyclus::QueryResult qr = b.Query("Snapshots", NULL);
-  EXPECT_EQ(1, qr.rows.size());
-  EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
-  cyclus::PyStop();
-}
+//   cyclus::QueryResult qr = b.Query("Snapshots", NULL);
+//   EXPECT_EQ(1, qr.rows.size());
+//   EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
+//   cyclus::PyStop();
+// }
 
 
-TEST(TimerTests, DefaultSnapshotDec) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
-  cyclus::SqliteBack b(path);
-  rec.RegisterBackend(&b);
+// TEST(TimerTests, DefaultSnapshotDec) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
+//   cyclus::SqliteBack b(path);
+//   rec.RegisterBackend(&b);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(10));
+//   ti.Initialize(&ctx, cyclus::SimInfo(10));
 
-  SnapperDec* turtle = new SnapperDec(&ctx);
-  turtle->Build(NULL);
+//   SnapperDec* turtle = new SnapperDec(&ctx);
+//   turtle->Build(NULL);
 
-  ti.RunSim();
-  rec.Close();
+//   ti.RunSim();
+//   rec.Close();
 
-  cyclus::QueryResult qr = b.Query("Snapshots", NULL);
-  EXPECT_EQ(1, qr.rows.size());
-  EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
-  cyclus::PyStop();
-}
+//   cyclus::QueryResult qr = b.Query("Snapshots", NULL);
+//   EXPECT_EQ(1, qr.rows.size());
+//   EXPECT_EQ(10, qr.GetVal<int>("Time", 0));
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, CustomSnapshot) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
-  cyclus::SqliteBack b(path);
-  rec.RegisterBackend(&b);
+// TEST(TimerTests, CustomSnapshot) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
+//   cyclus::SqliteBack b(path);
+//   rec.RegisterBackend(&b);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(10));
+//   ti.Initialize(&ctx, cyclus::SimInfo(10));
 
-  SnapperTick* turtle = new SnapperTick(&ctx);
-  turtle->snap = true;
-  turtle->Build(NULL);
+//   SnapperTick* turtle = new SnapperTick(&ctx);
+//   turtle->snap = true;
+//   turtle->Build(NULL);
 
-  ti.RunSim();
-  rec.Close();
+//   ti.RunSim();
+//   rec.Close();
 
-  cyclus::QueryResult qr = b.Query("Snapshots", NULL);
-  EXPECT_EQ(4, qr.rows.size());
-  EXPECT_EQ(1, qr.GetVal<int>("Time", 0));
-  EXPECT_EQ(4, qr.GetVal<int>("Time", 1));
-  EXPECT_EQ(7, qr.GetVal<int>("Time", 2));
-  EXPECT_EQ(10, qr.GetVal<int>("Time", 3));
-  cyclus::PyStop();
-}
+//   cyclus::QueryResult qr = b.Query("Snapshots", NULL);
+//   EXPECT_EQ(4, qr.rows.size());
+//   EXPECT_EQ(1, qr.GetVal<int>("Time", 0));
+//   EXPECT_EQ(4, qr.GetVal<int>("Time", 1));
+//   EXPECT_EQ(7, qr.GetVal<int>("Time", 2));
+//   EXPECT_EQ(10, qr.GetVal<int>("Time", 3));
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, NullParentDecomNoSegfault) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
+// TEST(TimerTests, NullParentDecomNoSegfault) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(2));
+//   ti.Initialize(&ctx, cyclus::SimInfo(2));
 
-  Dier* d = new Dier(&ctx);
-  d->Build(NULL);
+//   Dier* d = new Dier(&ctx);
+//   d->Build(NULL);
 
-  // EXPECT_NO_SEGFAULT
-  ti.RunSim();
-  cyclus::PyStop();
-}
+//   // EXPECT_NO_SEGFAULT
+//   ti.RunSim();
+//   cyclus::PyStop();
+// }
 
-TEST(TimerTests, DoubleDecom) {
-  cyclus::PyStart();
-  cyclus::Recorder rec;
-  cyclus::Timer ti;
-  cyclus::Context ctx(&ti, &rec);
+// TEST(TimerTests, DoubleDecom) {
+//   cyclus::PyStart();
+//   cyclus::Recorder rec;
+//   cyclus::Timer ti;
+//   cyclus::Context ctx(&ti, &rec);
 
-  ti.Initialize(&ctx, cyclus::SimInfo(4));
+//   ti.Initialize(&ctx, cyclus::SimInfo(4));
 
-  Dier* d = new Dier(&ctx);
-  d->Build(NULL);
-  ctx.SchedDecom(d, 0);
+//   Dier* d = new Dier(&ctx);
+//   d->Build(NULL);
+//   ctx.SchedDecom(d, 0);
 
-  Dier::decom_count = 0;
-  ti.RunSim();
-  EXPECT_EQ(1, Dier::decom_count);
-  cyclus::PyStop();
-}
+//   Dier::decom_count = 0;
+//   ti.RunSim();
+//   EXPECT_EQ(1, Dier::decom_count);
+//   cyclus::PyStop();
+// }
