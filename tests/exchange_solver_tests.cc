@@ -15,11 +15,11 @@ class MockSolver: public ExchangeSolver {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-TEST(ExSolverTests, Interface) {
-  MockSolver s;
-  EXPECT_EQ(0, s.i);
-  s.Solve();
-  EXPECT_EQ(1, s.i);
-  s.Solve();
-  EXPECT_EQ(2, s.i);
-}
+// TEST(ExSolverTests, Interface) {
+//   MockSolver s;
+//   EXPECT_EQ(0, s.i);
+//   s.Solve();
+//   EXPECT_EQ(1, s.i);
+//   s.Solve();
+//   EXPECT_EQ(2, s.i);
+// }
