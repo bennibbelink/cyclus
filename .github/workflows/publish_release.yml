@@ -64,9 +64,14 @@ jobs:
           build-args: |
             pkg_mgr=${{ matrix.pkg_mgr }}
             ubuntu_version=${{ matrix.ubuntu_versions }}
-
+      - name: debug
+        run: |
+          pwd
+          ls
+          pwd
+          ls cyclus
       - name: Build Debian package
-        working-directory: ./build
+        working-directory: build
         run: |
           make package
         
