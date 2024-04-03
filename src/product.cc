@@ -78,15 +78,12 @@ int Product::package_id() {
 }
 
 void Product::ChangePackageId(int new_package_id) {
-  if (ctx_ != NULL) {
-    throw ValueError("Package Id cannot be changed with NULL context");
-  }
-  if (new_package_id == package_id_) {
+  if (new_package_id == package_id_ || ctx_ == NULL) {
     // no change needed
     return;
   }
-  else if (new_package_id == default_package_id_) {
-    // default has functionally no restrictions
+  else if (new_package_id == Package::unpackaged_id()) {
+    // unpackaged has functionally no restrictions
     package_id_ = new_package_id;
     return;
   }
@@ -97,7 +94,7 @@ void Product::ChangePackageId(int new_package_id) {
   if (quantity_ >= min && quantity_ <= max) {
     package_id_ = new_package_id;
   } else {
-    throw ValueError("Material quantity is outside of package fill limits.");
+    throw ValueError("Product quantity is outside of package fill limits.");
   }
 }
 

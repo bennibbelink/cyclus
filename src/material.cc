@@ -23,7 +23,7 @@ Material::Ptr Material::Create(Agent* creator, double quantity,
 
 Material::Ptr Material::CreateUntracked(double quantity,
                                         Composition::Ptr c) {
-  Material::Ptr m(new Material(NULL, quantity, c, default_package_id_));
+  Material::Ptr m(new Material(NULL, quantity, c, Package::unpackaged_id()));
   return m;
 }
 
@@ -88,7 +88,7 @@ Material::Ptr Material::ExtractComp(double qty, Composition::Ptr c,
   }
 
   qty_ -= qty;
-  Material::Ptr other(new Material(ctx_, qty, c, default_package_id_));
+  Material::Ptr other(new Material(ctx_, qty, c, Package::unpackaged_id()));
 
   // Decay called on the extracted material should have the same dt as for
   // this material regardless of composition.
@@ -142,15 +142,12 @@ void Material::Transmute(Composition::Ptr c) {
 }
 
 void Material::ChangePackageId(int new_package_id) {
-  if (ctx_ != NULL) {
-    throw ValueError("Package Id cannot be changed with NULL context");
-  }
-  if (new_package_id == package_id_) {
+  if (new_package_id == package_id_ || ctx_ == NULL) {
     // no change needed
     return;
   }
-  else if (new_package_id == default_package_id_) {
-    // default has functionally no restrictions
+  else if (new_package_id == Package::unpackaged_id()) {
+    // unpackaged has functionally no restrictions
     package_id_ = new_package_id;
     return;
   }

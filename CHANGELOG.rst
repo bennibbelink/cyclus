@@ -17,7 +17,7 @@ Since last release
   will fail unless update-alternatives has been used to point python at the 
   correct python3 version (#1558)
 * build and test are now fown on githubAction in place or CircleCI (#1569)
-* Have separate workflows for testing, publishing dependency images, and publishing release images (#1597, #1602, #1606, #1609, #1629, #1633, #1637, #1668, #1672, #1676)
+* Have separate workflows for testing, publishing dependency images, and publishing release images (#1597, #1602, #1606, #1609, #1629, #1633, #1637, #1668, #1672, #1676, #1708)
 * Add Ubuntu 20.04 to the list of supported platforms (#1605, #1608)
 * Add random number generator (Mersenne Twister 19937, from boost) and the ability to set the seed in the simulation control block (#1599, #1677)
 * Added code coverage reporting to GitHub workflows (#1616, #1679)
@@ -27,10 +27,14 @@ Since last release
 * Adds support for Cython3 (#1636)
 * Adds TotalInvTracker, which allows an inventory cap to be set for multiple resource buffers, and is now required for material buy policy (#1646)
 * AddMutalReqs and AddReciepe functions and exclusive bids in python API of DRE (#1584)
-* Created Package class and optional declaration of packages in input files (#1673, #1699), package id is a member of resources (materials/products) (#1675)
+* Created Package class and optional declaration of packages in input files (#1673, #1699, #1712), package id is default unpackaged (#1711) and is a member of 
+  resources (materials/products) (#1675). Can pop resources as packaged from resource buffer, pushing resource onto a buffer defaults to stripping packaging (#1683)
 * CI support for Rocky Linux (#1691)
 * Added support for a ResBuf to behave as a single bulk storage with mixing & extraction of resources (#1687)
 * Added support for multithreading using OpenMP (#1709)
+* Removed deprecated `smbchk.py` ABI consistency checking functionality and tests (#1706). This functionality was 
+  originally deprecated in #1396, and is removed in #1706 to clean up deprecated functionality 
+  with the pending v1.6 release. 
 
 **Changed:**
 
@@ -40,6 +44,7 @@ Since last release
 * Changed README.rst installation instructions, tested on fresh Ubuntu-22.04 system with Python 3.11 (#1617, #1644)
 * Resolved various compilation warnings due to use of deprecated APIs (#1671)
 * Update version management in CMake build (#1696)
+* Changed dependency versions in README.rst, INSTALL.rst, and DEPENDENCIES.rst (#1703)
 
 **Removed:**
 
