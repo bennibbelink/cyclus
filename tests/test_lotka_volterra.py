@@ -7,8 +7,8 @@ import tables
 import numpy as np
 import hashlib
 
-from tools import check_cmd, thread_count
-from helper import clean_outs, agent_time_series, which_outfile
+from tools import check_cmd, thread_count, last_thread_num, first_thread_num
+from helper import clean_outs, agent_time_series, which_outfile, diff_dbs
 
 prey = "Prey"
 pred = "Predator"
@@ -20,14 +20,14 @@ def test_predator_only(thread_count):
 
     The population is expected to die off after a timestep.
     """
-    clean_outs()
+    if thread_count == first_thread_num:
+        clean_outs()
 
     # A reference simulation input for Lotka-Volterra simulation
     sim_input = os.path.join(DIR, "input", "predator.xml")
 
     holdsrtn = [1]  # needed because nose does not send() to test generator
     outfile = which_outfile(thread_count)
-    print(outfile)
     cmd = ["cyclus", "-j", thread_count, "-o", outfile, "--input-file", sim_input]
     check_cmd(cmd, '.', holdsrtn)
     rtn = holdsrtn[0]
@@ -44,14 +44,17 @@ def test_predator_only(thread_count):
     assert series[prey] ==  prey_exp
     assert series[pred] ==  pred_exp
 
-    clean_outs()
+    if thread_count == last_thread_num:
+        diff_dbs()
+        clean_outs()
 
 def test_prey_only(thread_count):
     """Tests simulations with Preys only.
 
     The population is expected to grow exponentially.
     """
-    clean_outs()
+    if thread_count == first_thread_num:
+        clean_outs()
     sim_input = os.path.join(DIR, "input", "prey.xml")
     holdsrtn = [1]  # needed because nose does not send() to test generator
     outfile = which_outfile(thread_count)
@@ -72,7 +75,9 @@ def test_prey_only(thread_count):
     assert series[prey] ==  prey_exp
     assert series[pred] ==  pred_exp
 
-    clean_outs()
+    if thread_count == last_thread_num:
+        diff_dbs()
+        clean_outs()
 
 def test_lotka_volterra(thread_count):
     """Tests simulations with Preys and Predators
@@ -88,7 +93,8 @@ def test_lotka_volterra(thread_count):
     A single oscillation is expected and the peak of the predator population is
     expected to occur after the peak of the prey population.
     """
-    clean_outs()
+    if thread_count == first_thread_num:
+        clean_outs()
     sim_input = os.path.join(DIR, "input", "lotka_volterra_determ.xml")
     holdsrtn = [1]  # needed because nose does not send() to test generator
     outfile = which_outfile(thread_count)
@@ -109,5 +115,7 @@ def test_lotka_volterra(thread_count):
 
     assert(prey_max < pred_max)
 
-    clean_outs()
+    if thread_count == last_thread_num:
+        diff_dbs()
+        # clean_outs()
 

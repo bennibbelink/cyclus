@@ -177,7 +177,10 @@ def dbtest(f):
             f(db, fname, backend)
     return wrapper
 
-@pytest.fixture(params=['1', '2', '3', '4'])
+# manually update this if the fixture params are modified
+first_thread_num = '1'
+last_thread_num = '4'
+@pytest.fixture(params=[str(x) for x in range(int(first_thread_num), int(last_thread_num) + 1)])
 def thread_count(request):
     ret = request.param
     yield ret

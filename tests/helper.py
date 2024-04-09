@@ -6,6 +6,9 @@ from hashlib import sha1
 
 import numpy as np
 import tables
+import filecmp
+import glob
+from pathlib import Path
 
 def hasher(x):
     return int(sha1(x.encode()).hexdigest(), 16)
@@ -39,6 +42,7 @@ def which_outfile(thread_count=1):
         ext = h5_suffix
     else:
         ext = sqlite_suffix
+    ext = sqlite_suffix
     outfile = outfile_name + f'_{thread_count}' + ext
     return outfile
 
@@ -215,3 +219,19 @@ def create_sim_input(ref_input, k_factor_in, k_factor_out):
     fw.close()
 
     return fw_path
+
+def diff_dbs():
+    if which_outfile().endswith(h5_suffix):
+        ext = h5_suffix
+    else:
+        ext = sqlite_suffix
+    pattern = outfile_name + "*" + ext
+    output_files = list(Path.cwd().glob(pattern))
+    # output_files.append(Path('ben.h5'))
+    print(output_files)
+    if len(output_files) <= 1:
+        return
+    base_f = output_files[0]
+    for f in output_files[1:]:
+        print(f.name)
+        assert filecmp.cmp(base_f, f, shallow=False)
