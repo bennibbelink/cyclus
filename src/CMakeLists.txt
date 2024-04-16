@@ -152,7 +152,7 @@ if(Cython_FOUND)
           OUTPUT_NAME "${name}"
           PREFIX ""
           INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-          INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+          INSTALL_RPATH "$ORIGIN/../lib"
           )
         SET(LIBS ${LIBS} ${name})
 
@@ -243,7 +243,7 @@ ADD_LIBRARY(cyclus ${CYCLUS_CORE_SRC})
 SET_TARGET_PROPERTIES(cyclus
     PROPERTIES
     INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
-    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+    INSTALL_RPATH "$ORIGIN/../lib"
     )
 
 TARGET_LINK_LIBRARIES(cyclus dl ${LIBS})
