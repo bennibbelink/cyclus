@@ -69,9 +69,9 @@ jobs:
         run: |
           python install.py -j 4 --build-type Release --allow-milps
             
-      - name: Unit Tests
-        id: cyclus-unit-tests
-        run: 
+      # - name: Unit Tests
+      #   id: cyclus-unit-tests
+      #   run: 
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
