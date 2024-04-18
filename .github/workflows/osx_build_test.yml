@@ -65,7 +65,9 @@ jobs:
       - name: Build Cyclus
         id: build-cyclus
         run: |
-          python install.py -j 4 --build-type Release --allow-milps --coin-root $(brew --prefix cbc) -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+          ls $(brew --prefix gcc)/bin
+          python install.py -j 4 --build-type Release --allow-milps --coin-root $(brew --prefix cbc) \
+            -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
