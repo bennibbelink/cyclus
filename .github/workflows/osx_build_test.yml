@@ -63,7 +63,7 @@ jobs:
             hdf5 \
             lapack \
             coin-or-tools/coinor/cbc \
-            oin-or-tools/coinor/clp \
+            coin-or-tools/coinor/clp \
             jinja2-cli \
             numpy
 
