@@ -45,7 +45,7 @@ jobs:
         id: brew-deps
         run: |
           brew install \
-            gcc \
+            gcc@13 \
             make \
             cmake \
             pkg-config \
@@ -67,7 +67,7 @@ jobs:
         run: |
           ls $(brew --prefix gcc)/bin
           python install.py -j 4 --build-type Release --allow-milps --coin-root $(brew --prefix cbc) \
-            -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++
+            -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-13 -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-13
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
