@@ -24,6 +24,9 @@ on:
       - 'doc/**'
       - 'CHANGELOG.rst'
 
+env:
+  GCC_VERSION: 13
+
 jobs:
   build-test-ubuntu:
     strategy:
@@ -34,6 +37,7 @@ jobs:
           macos-13,
           macos-14,
         ]
+
     runs-on: [ "${{ matrix.osx_versions }}" ]
 
     steps:
@@ -45,7 +49,7 @@ jobs:
         id: brew-deps
         run: |
           brew install \
-            gcc@13 \
+            gcc@${{ env.GCC_VERSION }} \
             make \
             cmake \
             pkg-config \
@@ -65,9 +69,10 @@ jobs:
       - name: Build Cyclus
         id: build-cyclus
         run: |
+          export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
           ls $(brew --prefix gcc)/bin
-          python install.py -j 4 --build-type Release --allow-milps --coin-root $(brew --prefix cbc) \
-            -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-13 -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-13
+          python install.py -j 3 --build-type Release --allow-milps --coin-root $(brew --prefix cbc) \
+            -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }}
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
