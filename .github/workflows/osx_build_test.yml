@@ -48,7 +48,6 @@ jobs:
       - name: Install Cyclus Dependencies
         id: brew-deps
         run: |
-          brew tap coin-or-tools/coinor
           brew install \
             gcc@${{ env.GCC_VERSION }} \
             make \
@@ -62,8 +61,8 @@ jobs:
             sqlite \
             hdf5 \
             lapack \
-            coin-or-tools/coinor/cbc \
-            coin-or-tools/coinor/clp \
+            cbc \
+            clp \
             jinja2-cli \
             numpy
 
@@ -74,6 +73,7 @@ jobs:
           which cmake
           ls $(brew --prefix)
           python install.py -j 3 --build-type Release --allow-milps 
+            --coin-root $(brew --prefix cbc)
             # --deps-root $(brew --prefix) \
             # -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
             # -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} \
