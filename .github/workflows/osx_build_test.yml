@@ -26,19 +26,15 @@ on:
 
 jobs:
   build-test-ubuntu:
-    runs-on: macos-13
-
-    strategy:
+      strategy:
       fail-fast: false
-      # matrix:
-      #   ubuntu_versions : [
-      #     20.04,
-      #     22.04,
-      #   ]
-      #   pkg_mgr : [
-      #     apt,
-      #     conda,
-      #   ]
+      matrix:
+        osx_versions : [
+          macos-12,
+          macos-13,
+          macos-14,
+        ]
+    runs-on: [ "${{ matrix.osx_versions }}" ]
 
     steps:
 
@@ -49,6 +45,8 @@ jobs:
         id: brew-deps
         run: |
           brew install \
+            gcc \
+            make \
             cmake \
             pkg-config \
             boost \
