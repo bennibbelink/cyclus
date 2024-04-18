@@ -74,7 +74,9 @@ jobs:
           ls $(brew --prefix)
           python install.py -j 3 --build-type Release --allow-milps --deps-root $(brew --prefix) \
             -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
-            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }}
+            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} \
+            -DPython3_EXECUTABLE=$(brew --prefix python)/bin/python3
+            -DPython3_INCLUDE_DIRS=$(brew --prefix python)/Frameworks/Python.framework/Headers
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
