@@ -48,6 +48,7 @@ jobs:
       - name: Install Cyclus Dependencies
         id: brew-deps
         run: |
+          brew tap coin-or-tools/coinor
           brew install \
             gcc@${{ env.GCC_VERSION }} \
             make \
@@ -61,8 +62,8 @@ jobs:
             sqlite \
             hdf5 \
             lapack \
-            cbc \
-            clp \
+            coin-or-tools/coinor/cbc \
+            oin-or-tools/coinor/clp \
             jinja2-cli \
             numpy
 
