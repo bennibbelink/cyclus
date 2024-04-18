@@ -36,6 +36,7 @@ MESSAGE(STATUS "Coin multiple library dependency status:")
 FIND_PATH(COIN_INCLUDE_DIR coin/CbcModel.hpp
     HINTS "${COIN_INCLUDE_DIR}"
     HINTS "${COIN_ROOT_DIR}/include"
+    HINTS "${COIN_ROOT_DIR}/include/cbc"
     ${DEPS_INCLUDE_HINTS}
     HINTS /usr/
     HINTS /usr/include/

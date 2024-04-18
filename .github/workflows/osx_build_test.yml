@@ -53,7 +53,7 @@ jobs:
             pkg-config \
             boost \
             libxml2 \
-            libxml++ \
+            libxml++@4 \
             python3 \
             cython \
             sqlite \
