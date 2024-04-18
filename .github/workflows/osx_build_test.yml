@@ -1,0 +1,88 @@
+name: OSX Build/Test Cyclus
+
+on:
+  # allows us to run workflows manually
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - '.github/workflows/build_test.yml'
+      - '.github/workflows/publish_latest.yml'
+      - '.github/workflows/publish_release.yml'
+      - '.github/workflows/changelog_test.yml'
+      - '.github/workflows/code_coverage.yml'
+      - '.github/workflows/rocky_build_test.yml'
+      - 'doc/**'
+      - 'CHANGELOG.rst'
+  push:
+    paths-ignore:
+      - '.github/workflows/build_test.yml'
+      - '.github/workflows/publish_latest.yml'
+      - '.github/workflows/publish_release.yml'
+      - '.github/workflows/changelog_test.yml'
+      - '.github/workflows/code_coverage.yml'
+      - '.github/workflows/rocky_build_test.yml'
+      - 'doc/**'
+      - 'CHANGELOG.rst'
+
+jobs:
+  build-test-ubuntu:
+    runs-on: macos-13
+
+    strategy:
+      fail-fast: false
+      # matrix:
+      #   ubuntu_versions : [
+      #     20.04,
+      #     22.04,
+      #   ]
+      #   pkg_mgr : [
+      #     apt,
+      #     conda,
+      #   ]
+
+    steps:
+
+      - name: Checkout Cyclus
+        uses: actions/checkout@v4
+
+      - name: Install Cyclus Dependencies
+        id: brew-deps
+        run: |
+          brew install \
+            cmake \
+            pkg-config \
+            boost \
+            libxml2 \
+            libxml++ \
+            python3 \
+            cython \
+            sqlite \
+            hdf5 \
+            lapack \
+            cbc \
+            clp \
+            jinja2-cli \
+            numpy
+
+      - name: Build Cyclus
+        id: build-cyclus
+        run: |
+          python install.py -j 4 --build-type Release --allow-milps
+            
+      - name: Unit Tests
+        id: cyclus-unit-tests
+        run: 
+
+      - name: Checkout Cycamore
+        if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
+        uses: actions/checkout@v4
+        with:
+          repository: cyclus/cycamore
+          path: ${{ github.workspace }}/cycamore
+
+      - name: Checkout Cymetric
+        if: ${{ github.event_name == 'pull_request' && steps.build-cycamore.outcome == 'success' }}
+        uses: actions/checkout@v4
+        with:
+          repository: cyclus/cymetric
+          path: ${{ github.workspace }}/cymetric
