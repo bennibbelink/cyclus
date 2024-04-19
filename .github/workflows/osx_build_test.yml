@@ -60,7 +60,7 @@ jobs:
             hdf5 \
             cbc \
             clp
-          $(brew --prefix python)/bin/python3 -m pip install --break-system-packages cython jinja2 pandas numpy distutils
+          $(brew --prefix python)/bin/python3 -m pip install --break-system-packages cython jinja2 pandas numpy setuptools
 
       - name: Build Cyclus
         id: build-cyclus
