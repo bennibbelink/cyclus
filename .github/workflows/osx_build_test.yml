@@ -66,7 +66,9 @@ jobs:
         id: cyclus-unit-tests
         run: |
           source .venv/bin/activate
-          export PATH=${{ runner.home }}/.local/bin:$PATH
+          echo $HOME
+          pwd
+          export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           cd tests && python -m pytest
 
