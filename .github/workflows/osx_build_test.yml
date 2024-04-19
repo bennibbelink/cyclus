@@ -54,16 +54,11 @@ jobs:
             hdf5 \
             cbc \
             clp
-          brew reinstall gcc@${{ env.GCC_VERSION }}
           python -m venv --system-site-packages .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
           python -m pip install cython jinja2 pandas numpy setuptools
-          # export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
-          echo $PATH
-          python install.py -j 3 --build-type Release 
-            # -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
-            # -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }}
+          python install.py -j 3 --build-type Release
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
