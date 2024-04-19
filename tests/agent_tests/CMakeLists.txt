@@ -33,7 +33,8 @@ TARGET_LINK_LIBRARIES(
   ${TGT} dl
   ${LIBS}
   cyclus
-  gtest
+  GTest::gtest
+  GTest::gtest_main
   )
 
 INSTALL(

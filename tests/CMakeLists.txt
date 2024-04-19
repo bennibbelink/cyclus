@@ -7,49 +7,17 @@ SET(GENERATED_TEST_LIST "" CACHE INTERNAL "")
 SET(GENERATED_FILTER_LIST "" CACHE INTERNAL "")
 SET(GENERATED_TEST_SOURCE_LIST "" CACHE INTERNAL "")
 
-# The gtest include file directories.
-SET(GTEST_INCLUDE_DIRS
-    "${CMAKE_CURRENT_SOURCE_DIR}/GoogleTest"
-    )
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+)
 
-# The gtest library directories.
-SET(GTEST_LIBRARY_DIRS "${CMAKE_CURRENT_BINARY_DIR}/lib")
-
-# Alerts CMake to any tests we need to worry about
-INCLUDE_DIRECTORIES(${GTEST_INCLUDE_DIRS})
-
-FIND_PACKAGE(Threads)
-IF(CMAKE_USE_PTHREADS_INIT)  # The pthreads library is available.
-    SET(cxx_base_flags "${cxx_base_flags} -DGTEST_HAS_PTHREAD=1")
-ENDIF()
-
-# Build libgtest
-SET(GTest
-    "${CMAKE_CURRENT_SOURCE_DIR}/GoogleTest/gtest/gtest-all.cc"
-    )
-
+SET(BUILD_GMOCK OFF CACHE BOOL "Builds the googlemock subproject" FORCE)
+SET(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" FORCE)
+FetchContent_MakeAvailable(googletest)
+INCLUDE_DIRECTORIES(${googletest_INCLUDE_DIRECTORIES})
 INCLUDE_DIRECTORIES(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}")
-
-ADD_LIBRARY(gtest ${GTest})
-
-IF(CMAKE_USE_PTHREADS_INIT)
-    TARGET_LINK_LIBRARIES(gtest ${CMAKE_THREAD_LIBS_INIT})
-ENDIF()
-
-SET_TARGET_PROPERTIES(gtest
-    PROPERTIES INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib/cyclus"
-    INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib/cyclus"
-    )
-
-INSTALL(TARGETS gtest
-    LIBRARY DESTINATION lib/cyclus
-    COMPONENT testing
-    )
-
-INSTALL(FILES GoogleTest/gtest/gtest.h
-    DESTINATION include/cyclus/gtest
-    COMPONENT testing
-    )
 
 ###############################################################################
 ##################################### end google test #########################
@@ -100,7 +68,7 @@ SET(
     )
 
 SET(CYCLUS_TEST_LIBRARIES
-    "${CYCLUS_TEST_LIBRARIES}" gtest PARENT_SCOPE) # for stubs/agents
+    "${CYCLUS_TEST_LIBRARIES}" GTest::gtest GTest::gtest_main PARENT_SCOPE) # for stubs/agents
 
 ADD_SUBDIRECTORY(test_agents)
 INSTALL(FILES ${test_agents}
