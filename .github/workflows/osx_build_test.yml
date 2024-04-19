@@ -60,9 +60,17 @@ jobs:
           python -m pip install cython jinja2 pandas numpy setuptools
           python install.py -j 3 --build-type Release
             
-      # - name: Unit Tests
-      #   id: cyclus-unit-tests
-      #   run: 
+      - name: Unit Tests
+        id: cyclus-unit-tests
+        run: |
+          echo $PATH
+          cyclus_unit_tests
+
+      - name: Python Tests
+        id: cyclus-python-tests
+        run: |
+          cd tests
+          python -m pytest
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
