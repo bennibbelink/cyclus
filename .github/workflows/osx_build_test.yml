@@ -24,9 +24,6 @@ on:
       - 'doc/**'
       - 'CHANGELOG.rst'
 
-env:
-  GCC_VERSION: 13
-
 jobs:
   build-test-ubuntu:
     strategy:
@@ -46,7 +43,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cyclus Dependencies
-        id: brew-deps
+        id: cyclus-deps
         run: |
           brew install \
             boost \
@@ -58,19 +55,20 @@ jobs:
           source .venv/bin/activate
           python -m pip install --upgrade pip
           python -m pip install cython jinja2 pandas numpy setuptools
+
+      - name: Build Cyclus
+        id: build-cyclus
+        run: |
+          source .venv/bin/activate
           python install.py -j 3 --build-type Release
             
       - name: Unit Tests
         id: cyclus-unit-tests
         run: |
-          echo $PATH
+          source .venv/bin/activate
+          export PATH=${{ runner.home }}/.local/bin:$PATH
           cyclus_unit_tests
-
-      - name: Python Tests
-        id: cyclus-python-tests
-        run: |
-          cd tests
-          python -m pytest
+          cd tests && python -m pytest
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
