@@ -51,7 +51,7 @@ jobs:
           brew install \
             gcc@${{ env.GCC_VERSION }} \
             boost \
-            libxml++@4 \
+            libxml++ \
             hdf5 \
             cbc \
             clp
