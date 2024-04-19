@@ -25,7 +25,7 @@ on:
       - 'CHANGELOG.rst'
 
 jobs:
-  build-test-ubuntu:
+  build-test-macos:
     strategy:
       fail-fast: false
       matrix:
