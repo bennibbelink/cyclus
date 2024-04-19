@@ -59,8 +59,9 @@ jobs:
             sqlite \
             hdf5 \
             cbc \
-            clp
-          $(brew --prefix python)/bin/python3 -m pip install cython jinja2 pandas numpy
+            clp \
+            pipx
+          pipx install cython jinja2 pandas numpy
 
       - name: Build Cyclus
         id: build-cyclus
