@@ -54,7 +54,7 @@ jobs:
           python -m venv --system-site-packages .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
-          python -m pip install cython jinja2 pandas numpy setuptools
+          python -m pip install cython jinja2 pandas numpy setuptools pytest tables
 
       - name: Build Cyclus
         id: build-cyclus
