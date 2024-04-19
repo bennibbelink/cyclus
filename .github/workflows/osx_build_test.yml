@@ -54,7 +54,7 @@ jobs:
             hdf5 \
             cbc \
             clp
-          brew reinstall -sv gcc@${{ env.GCC_VERSION }}
+          brew reinstall gcc@${{ env.GCC_VERSION }}
           python -m venv --system-site-packages .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
