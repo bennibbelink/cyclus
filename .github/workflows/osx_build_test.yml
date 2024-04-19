@@ -62,9 +62,8 @@ jobs:
             lapack \
             cbc \
             clp \
-            jinja2-cli \
             numpy
-          python -m pip install cython
+          python -m pip install cython jinja2 pandas
 
       - name: Build Cyclus
         id: build-cyclus
