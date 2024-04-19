@@ -57,7 +57,6 @@ jobs:
             libxml2 \
             libxml++@4 \
             python3 \
-            cython \
             sqlite \
             hdf5 \
             lapack \
@@ -65,12 +64,12 @@ jobs:
             clp \
             jinja2-cli \
             numpy
+          python -m pip install cython
 
       - name: Build Cyclus
         id: build-cyclus
         run: |
           export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
-          which cmake
           ls $(brew --prefix)
           python install.py -j 3 --build-type Release \
             -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
