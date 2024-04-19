@@ -55,22 +55,21 @@ jobs:
             pkg-config \
             boost \
             libxml++@4 \
-            python3 \
             sqlite \
             hdf5 \
             cbc \
             clp
-          $(brew --prefix python)/bin/python3 -m pip install --break-system-packages cython jinja2 pandas numpy setuptools
+          python -m pip install --break-system-packages cython jinja2 pandas numpy setuptools
 
       - name: Build Cyclus
         id: build-cyclus
         run: |
           export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
           ls $(brew --prefix)
-          $(brew --prefix python)/bin/python3 install.py -j 3 --build-type Release \
+          python install.py -j 3 --build-type Release \
             -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
-            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} \
-            -DPython3_EXECUTABLE=$(brew --prefix python)/bin/python3
+            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} 
+            # -DPython3_EXECUTABLE=$(brew --prefix python)/bin/python3
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
