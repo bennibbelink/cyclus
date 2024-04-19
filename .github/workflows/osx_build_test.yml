@@ -50,12 +50,8 @@ jobs:
         run: |
           brew install \
             gcc@${{ env.GCC_VERSION }} \
-            # make \
-            # cmake \
-            # pkg-config \
             boost \
             libxml++@4 \
-            # sqlite \
             hdf5 \
             cbc \
             clp
