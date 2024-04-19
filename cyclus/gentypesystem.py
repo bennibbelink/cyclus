@@ -12,13 +12,8 @@ import os
 import sys
 import json
 import argparse
-import platform
-import warnings
 import itertools
 import subprocess
-from glob import glob
-from distutils import core, dir_util
-from pprint import pprint, pformat
 from collections import defaultdict
 if sys.version_info[0] > 2:
     from urllib.request import urlopen
