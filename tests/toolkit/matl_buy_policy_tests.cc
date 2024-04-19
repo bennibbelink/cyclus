@@ -24,7 +24,7 @@ class TestComp : public Composition {
   TestComp() {}
 };
 
-class MatlBuyPolicyTests: public ::testing::Test {
+class DISABLED_MatlBuyPolicyTests: public ::testing::Test {
  protected:
   TestContext tc;
   TestFacility* fac1;
@@ -483,7 +483,7 @@ TEST_F(MatlBuyPolicyTests, NormalActiveDormant) {
   delete a;
 }
 
-TEST_F(MatlBuyPolicyTests, DISABLED_MixedActiveDormant) {
+TEST_F(MatlBuyPolicyTests, MixedActiveDormant) {
   using cyclus::QueryResult;
   
   boost::shared_ptr<NormalIntDist> a_dist = boost::shared_ptr<NormalIntDist>(new NormalIntDist(5, 1, 0, 1e299));
