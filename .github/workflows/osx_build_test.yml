@@ -51,7 +51,7 @@ jobs:
           brew install \
             gcc@${{ env.GCC_VERSION }} \
             boost \
-            libxml++ \
+            libxml++@4 \
             hdf5 \
             cbc \
             clp
@@ -63,8 +63,7 @@ jobs:
           echo $PATH
           python install.py -j 3 --build-type Release \
             -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
-            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} 
-            # -DPython3_EXECUTABLE=$(brew --prefix python)/bin/python3
+            -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }}
             
       # - name: Unit Tests
       #   id: cyclus-unit-tests
