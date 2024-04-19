@@ -61,7 +61,7 @@ jobs:
             cbc \
             clp \
             pipx
-          pipx install cython jinja2 pandas numpy
+          pipx install cython Jinja2 pandas numpy
 
       - name: Build Cyclus
         id: build-cyclus
