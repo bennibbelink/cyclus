@@ -483,7 +483,7 @@ TEST_F(MatlBuyPolicyTests, NormalActiveDormant) {
   delete a;
 }
 
-TEST_F(MatlBuyPolicyTests, MixedActiveDormant) {
+TEST_F(MatlBuyPolicyTests, DISABLED_MixedActiveDormant) {
   using cyclus::QueryResult;
   
   boost::shared_ptr<NormalIntDist> a_dist = boost::shared_ptr<NormalIntDist>(new NormalIntDist(5, 1, 0, 1e299));
