@@ -50,22 +50,21 @@ jobs:
         run: |
           brew install \
             gcc@${{ env.GCC_VERSION }} \
-            make \
-            cmake \
-            pkg-config \
+            # make \
+            # cmake \
+            # pkg-config \
             boost \
             libxml++@4 \
-            sqlite \
+            # sqlite \
             hdf5 \
             cbc \
             clp
-          python -m pip install --break-system-packages cython jinja2 pandas numpy setuptools
-
-      - name: Build Cyclus
-        id: build-cyclus
-        run: |
+          python -m venv --system-site-packages .venv
+          source .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install cython jinja2 pandas numpy setuptools
           export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
-          ls $(brew --prefix)
+          echo $PATH
           python install.py -j 3 --build-type Release \
             -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
             -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} 
