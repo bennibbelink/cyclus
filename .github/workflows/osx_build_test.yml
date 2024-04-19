@@ -72,9 +72,8 @@ jobs:
           export CPP=$(brew --prefix gcc)/bin/cpp-${{ env.GCC_VERSION }}
           which cmake
           ls $(brew --prefix)
-          python install.py -j 3 --build-type Release --allow-milps 
-            --coin-root $(brew --prefix cbc) \
-            -DCOIN_INCLUDE_DIR=$(brew --prefix cbc)/include/cbc
+          python install.py -j 3 --build-type Release 
+            # --coin-root=$(brew --prefix cbc) \
             # --deps-root $(brew --prefix) \
             # -DCMAKE_C_COMPILER=$(brew --prefix gcc)/bin/gcc-${{ env.GCC_VERSION }} \
             # -DCMAKE_CXX_COMPILER=$(brew --prefix gcc)/bin/g++-${{ env.GCC_VERSION }} \
