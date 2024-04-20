@@ -10,25 +10,21 @@ SET(GENERATED_TEST_SOURCE_LIST "" CACHE INTERNAL "")
 include(FetchContent)
 FetchContent_Declare(
   googletest
+  BUILD_GMOCK FALSE # do not build googlemock subproject
+  INSTALL_GTEST FALSE # do not install googletest, we will do this ourselves
   URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
 )
-
-SET(BUILD_GMOCK OFF CACHE BOOL "Builds the googlemock subproject" FORCE)
-SET(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-FILE(GLOB gtest_cc_files "${googletest_SOURCE_DIR}/googletest/src/*.cc")
-SET(gtest_header_files "${googletest_SOURCE_DIR}/googletest/include")
+INSTALL(TARGETS gtest
+    LIBRARY DESTINATION lib/cyclus
+    COMPONENT testing
+    )
 
-# INSTALL(TARGETS gtest
-#     LIBRARY DESTINATION lib/cyclus
-#     COMPONENT testing
-#     )
-
-# INSTALL(DIRECTORY ${googletest_SOURCE_DIR}/googletest/include/gtest
-#     DESTINATION include/cyclus
-#     COMPONENT testing
-#     )
+INSTALL(DIRECTORY ${googletest_SOURCE_DIR}/googletest/include/gtest
+    DESTINATION include/cyclus
+    COMPONENT testing
+    )
 
 ###############################################################################
 ##################################### end google test #########################
@@ -83,7 +79,7 @@ SET(
     )
 
 SET(CYCLUS_TEST_LIBRARIES
-    "${CYCLUS_TEST_LIBRARIES}") # for stubs/agents
+    "${CYCLUS_TEST_LIBRARIES}" gtest) # for stubs/agents
 
 ADD_SUBDIRECTORY(test_agents)
 INSTALL(FILES ${test_agents}
