@@ -16,8 +16,19 @@ FetchContent_Declare(
 SET(BUILD_GMOCK OFF CACHE BOOL "Builds the googlemock subproject" FORCE)
 SET(INSTALL_GTEST OFF CACHE BOOL "Enable installation of googletest. (Projects embedding googletest may want to turn this OFF.)" FORCE)
 FetchContent_MakeAvailable(googletest)
-INCLUDE_DIRECTORIES(${googletest_INCLUDE_DIRECTORIES})
-INCLUDE_DIRECTORIES(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}")
+
+FILE(GLOB gtest_cc_files "${googletest_SOURCE_DIR}/googletest/src/*.cc")
+SET(gtest_header_files "${googletest_SOURCE_DIR}/googletest/include")
+
+# INSTALL(TARGETS gtest
+#     LIBRARY DESTINATION lib/cyclus
+#     COMPONENT testing
+#     )
+
+# INSTALL(DIRECTORY ${googletest_SOURCE_DIR}/googletest/include/gtest
+#     DESTINATION include/cyclus
+#     COMPONENT testing
+#     )
 
 ###############################################################################
 ##################################### end google test #########################
@@ -27,6 +38,7 @@ INCLUDE_DIRECTORIES(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}")
 ################################### begin cyclus testing ######################
 ###############################################################################
 
+INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}")
 INCLUDE_DIRECTORIES(BEFORE ${CYCLUS_CORE_INCLUDE_DIRS})
 
 set(CYCLUS_TEST_COIN_SRC
@@ -47,7 +59,11 @@ SET(CYCLUS_CORE_TEST_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 
 FILE(GLOB header_files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 FILE(GLOB test_agents "${CMAKE_CURRENT_SOURCE_DIR}/test_agents/*.h")
-INSTALL(FILES ${header_files}
+INSTALL(FILES ${header_files} 
+    DESTINATION include/cyclus
+    COMPONENT testing
+    )
+INSTALL(DIRECTORY ${gtest_header_files}
     DESTINATION include/cyclus
     COMPONENT testing
     )
@@ -57,18 +73,17 @@ ADD_SUBDIRECTORY(toolkit)
 ADD_SUBDIRECTORY(agent_tests)
 SET(
     CYCLUS_CORE_TEST_SOURCE "${CYCLUS_CORE_TEST_SOURCE}"
-    "${cc_files}"
+    "${cc_files}" "${gtest_cc_files}"
     PARENT_SCOPE
     )
 SET(
     CYCLUS_CORE_INCLUDE_DIRS "${CYCLUS_CORE_INCLUDE_DIRS}"
     "${CYCLUS_CORE_TEST_INCLUDE_DIRS}"
-    "${GTEST_INCLUDE_DIRS}"
     PARENT_SCOPE
     )
 
 SET(CYCLUS_TEST_LIBRARIES
-    "${CYCLUS_TEST_LIBRARIES}" GTest::gtest GTest::gtest_main PARENT_SCOPE) # for stubs/agents
+    "${CYCLUS_TEST_LIBRARIES}") # for stubs/agents
 
 ADD_SUBDIRECTORY(test_agents)
 INSTALL(FILES ${test_agents}
