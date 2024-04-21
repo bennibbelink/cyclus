@@ -70,6 +70,9 @@ jobs:
           pwd
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
+          python -m site --user-site
+          ls $(python -m site --user-site)
+          ls $(python -m site --user-site)/cyclus
           cd tests && python -m pytest
 
       - name: Checkout Cycamore
