@@ -70,8 +70,11 @@ jobs:
           pwd
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
-          python -m site --user-site
-          ls $(python -m site --user-site)
+          echo "LIB"
+          ls $HOME/.local/lib
+          echo "<LIB/CYCLUS"
+          ls $HOME/.local/lib/cyclus
+          echo "Site Packages"
           ls $(python -m site --user-site)/cyclus
           cd tests && python -m pytest
 
