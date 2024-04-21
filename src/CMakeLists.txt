@@ -162,8 +162,18 @@ if(Cython_FOUND)
           TARGETS ${name}
           LIBRARY DESTINATION lib
           )
+        
+        # Python will only import libraries with .so file extension on mac
+        # so we need to install these libraries as .so
+        IF (WIN32)
+          set(libfilename "${name}.dll")
+        ELSEIF(APPLE)
+          set(libfilename "${name}.so")
+        ELSE()
+          set(libfilename "${name}.so")
+        ENDIF()
         INSTALL(
-          TARGETS ${name}
+          TARGETS $<${libfilename}:${name}>
           LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
           )
 
