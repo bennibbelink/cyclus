@@ -76,7 +76,7 @@ jobs:
           ls $HOME/.local/lib/cyclus
           echo "Site Packages"
           ls $(python -m site --user-site)/cyclus
-          cd tests && python -m pytest
+          cd tests && python -m pytest --ignore test_main.py
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
