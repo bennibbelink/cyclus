@@ -162,28 +162,13 @@ if(Cython_FOUND)
           TARGETS ${name}
           LIBRARY DESTINATION lib
           )
-        
-        # Python will only import libraries with .so file extension on mac
-        # so we need to install these libraries as .so
-        # IF (WIN32)
-        #   set(cylib_extension ".dll")
-        # ELSEIF(APPLE)
-        #   set(cylib_extension ".so")
-        # ELSE()
-        #   set(cylib_extension ".so")
-        # ENDIF()
-        # set_target_properties(${name} PROPERTIES
-        #   SUFFIX ${cylib_extension}
-        # )
-        INSTALL(
-          TARGETS ${name}
-          LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
-          )
-        IF (APPLE)
-          INSTALL(CODE "
-              EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${name}.dylib ${PYTHON_SITE_PACKAGES}/${name}.so)
-            ")
-        ENDIF()
+
+        # Add symlinks to PYTHON_SITE_PACKAGES so python can find our cython modules
+        # Python will only import libraries with .so extensions
+        # so we hardocode the symlink with .so even on APPLE
+        INSTALL(CODE "
+            EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${name} ${PYTHON_SITE_PACKAGES}/${name}.so)
+          ")
 
         copy_when_diff(${_generated_h} ${_h_file})
         copy_when_diff(${_generated_cc} ${_cc_file})
