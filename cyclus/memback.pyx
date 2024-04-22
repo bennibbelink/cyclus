@@ -25,12 +25,12 @@ from ast import (Name, Compare, Load, Eq, NotEq, Lt, LtE, Gt, GtE,
     BinOp, BitAnd, Expression)
 
 # startup numpy
-# cimport numpy as np
-# import numpy as np
+cimport numpy as np
+import numpy as np
 import pandas as pd
 
-# np.import_array()
-# np.import_ufunc()
+np.import_array()
+np.import_ufunc()
 
 
 cdef cppclass CyclusMemBack "CyclusMemBack" (cpp_cyclus.RecBackend):
