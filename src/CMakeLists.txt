@@ -163,8 +163,8 @@ if(Cython_FOUND)
           LIBRARY DESTINATION lib
           )
 
-        GET_TARGET_PROPERTY(cylib_suffix TARGET ${name} PROPERTY SUFFIX)
-        GET_TARGET_PROPERTY(cylib_location TARGET ${name} PROPERTY LOCATION)
+        GET_TARGET_PROPERTY(cylib_suffix ${name} SUFFIX)
+        GET_TARGET_PROPERTY(cylib_location ${name} LOCATION)
         Message("cylib_suffix is ${cylib_suffix}")
         Message("cylib_location is ${cylib_location}")
 
