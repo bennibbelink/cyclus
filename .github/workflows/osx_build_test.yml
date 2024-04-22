@@ -50,7 +50,8 @@ jobs:
             libxml++@4 \
             hdf5 \
             cbc \
-            clp
+            clp \
+            numpy
           python -m venv --system-site-packages .venv
           source .venv/bin/activate
           python -m pip install --upgrade pip
@@ -72,9 +73,11 @@ jobs:
           cyclus_unit_tests
           echo "LIB"
           ls $HOME/.local/lib
-          echo "<LIB/CYCLUS"
+          echo "LIB/CYCLUS"
           ls $HOME/.local/lib/cyclus
           echo "Site Packages"
+          ls $(python -m site --user-site)
+          echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
           cd tests && python -m pytest --ignore test_main.py
 
