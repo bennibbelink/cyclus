@@ -26,8 +26,8 @@ from collections import defaultdict
 from collections.abc import Mapping, Sequence, Iterable
 from importlib import import_module
 
-cimport numpy as np
-import numpy as np
+# cimport numpy as np
+# import numpy as np
 import pandas as pd
 
 # local imports
@@ -48,8 +48,8 @@ from cyclus.typesystem cimport py_to_any, db_to_py, uuid_cpp_to_py, \
 
 
 # startup numpy
-np.import_array()
-np.import_ufunc()
+# np.import_array()
+# np.import_ufunc()
 
 
 cdef cpp_cyclus.Agent* dynamic_agent_ptr(object a):
