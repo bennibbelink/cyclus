@@ -163,11 +163,16 @@ if(Cython_FOUND)
           LIBRARY DESTINATION lib
           )
 
+        GET_TARGET_PROPERTY(cylib_suffix TARGET ${name} PROPERTY SUFFIX)
+        GET_TARGET_PROPERTY(cylib_location TARGET ${name} PROPERTY LOCATION)
+        Message("cylib_suffix is ${cylib_suffix}")
+        Message("cylib_location is ${cylib_location}")
+
         # Add symlinks to PYTHON_SITE_PACKAGES so python can find our cython modules
         # Python will only import libraries with .so extensions
         # so we hardocode the symlink with .so even on APPLE
         INSTALL(CODE "
-            EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${name} ${PYTHON_SITE_PACKAGES}/${name}.so)
+            EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${name}${cylib_suffix}\" ${PYTHON_SITE_PACKAGES}/${name}.so)
           ")
 
         copy_when_diff(${_generated_h} ${_h_file})
