@@ -221,7 +221,6 @@ jobs:
           echo "PYTHONUSERBASE=${{ github.workspace }}/myenv" >> "$GITHUB_ENV"
           echo "PATH=$PATH" >> "$GITHUB_ENV"
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
-          python -m site --user-site
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
