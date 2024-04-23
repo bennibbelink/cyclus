@@ -218,13 +218,9 @@ jobs:
             virtualenv
           virtualenv myenv
           source myenv/bin/activate
+          export PYTHONUSERBASE=${{ github.workspace }}/myenv
           echo "PATH=$PATH" >> "$GITHUB_ENV"
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
-
-      - name: Build Cyclus
-        id: build-cyclus
-        run: |
-          export PYTHONUSERBASE=${{ github.workspace }}/myenv
           python -m site --user-site
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
@@ -275,6 +271,7 @@ jobs:
         id: cyclus-deps
         run: |
           brew install wget
+          brew uninstall numpy
           export PATH=$HOME/conda/bin:$PATH 
           wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
           bash $HOME/miniconda.sh -b -p $HOME/conda
