@@ -224,12 +224,9 @@ jobs:
         id: build-cyclus
         run: |
           source myenv/bin/activate
+          export PYTHONUSERBASE=${{ github.workspace }}/myenv
           python -m site --user-site
-          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=${{github.workspace}}/myenv/lib/python3.12/site-packages
-            
-      - name: Unit Tests
-        id: cyclus-unit-tests
-        run: |
+          python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           echo "LIB"
@@ -237,9 +234,9 @@ jobs:
           echo "LIB/CYCLUS"
           ls $HOME/.local/lib/cyclus
           echo "Site Packages"
-          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages
+          ls $(python -m site --user-site)
           echo "Site Packages/cyclus"
-          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages/cyclus
+          ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
           cd tests && python -m pytest --ignore test_main.py
 
@@ -306,6 +303,7 @@ jobs:
               pytest \
               pytables \
               pandas \
+              numpy \
               jinja2 \
               cython \
               websockets \
