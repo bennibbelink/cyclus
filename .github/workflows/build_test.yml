@@ -226,7 +226,7 @@ jobs:
         run: |
           source .venv/bin/activate
           python -m site --user-site
-          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=.venv/lib/python3.12/site-packages
+          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=${{ github.workspace }}.venv/lib/python3.12/site-packages
             
       - name: Unit Tests
         id: cyclus-unit-tests
