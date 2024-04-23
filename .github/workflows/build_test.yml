@@ -218,10 +218,10 @@ jobs:
             virtualenv
           virtualenv myenv
           source myenv/bin/activate
-          echo "PYTHONUSERBASE=${{ github.workspace }}/myenv" >> "$GITHUB_ENV"
+          export PYTHONUSERBASE=${{ github.workspace }}/myenv
           echo "PATH=$PATH" >> "$GITHUB_ENV"
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
-          python install.py -j 3 --build-type Release
+          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=$(python -m site --user-site)
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           echo "LIB"
@@ -303,8 +303,6 @@ jobs:
               websockets \
               pprintpp \
               pip
-
-          conda reinstall -y numpy
           python install.py -j 4 --build-type Release
           echo $HOME
           pwd
