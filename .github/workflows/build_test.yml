@@ -216,10 +216,11 @@ jobs:
             cbc \
             clp \
             virtualenv
-          virtualenv myenv
-          source myenv/bin/activate
+          brew reinstall python3
+          python3 -m venv $HOME/myenv
+          source $HOME/myenv/bin/activate
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
-          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=${{github.workspace}}/myenv/lib/python3.12/site-packages
+          python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           echo "LIB"
@@ -227,9 +228,9 @@ jobs:
           echo "LIB/CYCLUS"
           ls $HOME/.local/lib/cyclus
           echo "Site Packages"
-          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages
+          ls $(python -m site --user-site)
           echo "Site Packages/cyclus"
-          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages/cyclus
+          ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
           cd tests && python -m pytest --ignore test_main.py
 
