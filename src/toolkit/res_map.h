@@ -98,7 +98,7 @@ class ResMap {
 
   /// Returns a reference to a resource pointer given a key.
   const typename R::Ptr& operator[](const K& k) const {
-    dirty_quantity_ = true;
+    const_case<ResMap*>(this)->dirty_quantity_ = true;
     return const_cast<map_type&>(resources_)[k];
   };
 

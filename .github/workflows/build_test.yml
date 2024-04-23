@@ -303,6 +303,7 @@ jobs:
               pip
           source $HOME/conda/etc/profile.d/conda.sh
           conda activate cyclusenv
+          mkdir -p $(python -m site --user-site)
           python install.py -j 4 --build-type Release
           echo $HOME
           pwd
