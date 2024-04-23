@@ -320,9 +320,9 @@ IF(NOT CYCLUS_DOC_ONLY)
     endif()
     message("-- PYTHON_EXECUTABLE: ${Python3_EXECUTABLE}")
     message("-- PYTHON_SITE_PACKAGES: ${PYTHON_SITE_PACKAGES}")
-    IF (NOT APPLE)
+    # IF (NOT APPLE)
         set(LIBS ${LIBS} ${Python3_LIBRARIES})
-    ENDIF (NOT APPLE)
+    # ENDIF (NOT APPLE)
 
     # Include the CMake script UseCython.cmake.  This defines add_cython_module().
     # Instruction for use can be found at the top of cmake/UseCython.cmake.
