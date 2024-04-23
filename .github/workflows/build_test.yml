@@ -218,10 +218,8 @@ jobs:
             virtualenv
           virtualenv myenv
           source myenv/bin/activate
-          export PYTHONUSERBASE=${{ github.workspace }}/myenv
-          echo "PATH=$PATH" >> "$GITHUB_ENV"
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
-          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=$(python -m site --user-site)
+          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=${{github.workspace}}/myenv/lib/python3.12/site-packages
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           echo "LIB"
