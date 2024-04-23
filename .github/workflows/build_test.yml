@@ -190,7 +190,7 @@ jobs:
           build-args: |
             rocky_version=${{ matrix.rocky_versions }}
 
-  build-test-macos:
+  build-test-macos-brew:
     strategy:
       fail-fast: false
       matrix:
@@ -261,30 +261,71 @@ jobs:
           repository: cyclus/cymetric
           path: ${{ github.workspace }}/cymetric
 
-      # - name: Export Environment Variables
-      #   if: github.event_name == 'pull_request'
-      #   run: |
-      #     echo "CYCAMORE_BUILD_STATUS=${{steps.build-cycamore.outcome == 'success' && '**Success** :white_check_mark:' || 
-      #     steps.build-cycamore.outcome == 'failure' && '**Failure** :x:' || 
-      #     '**Skipped due to upstream failure** :warning:'}}" >> "$GITHUB_ENV"
 
-      #     echo "CYMETRIC_BUILD_STATUS=${{steps.build-cymetric.outcome == 'success' && '**Success** :white_check_mark:' || 
-      #     steps.build-cymetric.outcome == 'failure' && '**Failure** :x:' || 
-      #     '**Skipped due to upstream failure** :warning:'}}" >> "$GITHUB_ENV"
+  build-test-macos-conda:
+    strategy:
+      fail-fast: false
+      matrix:
+        osx_versions : [
+          macos-12,
+          macos-13,
+          # macos-14,
+        ]
 
-      #     echo "ARTIFACT_NAME=${{ matrix.ubuntu_versions }}_${{ matrix.pkg_mgr }}" >> "$GITHUB_ENV"
+    runs-on: [ "${{ matrix.osx_versions }}" ]
 
-      # - name: Construct Artifact
-      #   if: github.event_name == 'pull_request'
-      #   run: |
-      #     echo "
-      #     ##### Build \`FROM cyclus_${{ matrix.ubuntu_versions }}_${{ matrix.pkg_mgr }}/cyclus\`
-      #       - Cycamore: ${{ env.CYCAMORE_BUILD_STATUS }}
-      #       - Cymetric: ${{ env.CYMETRIC_BUILD_STATUS }}" > ${{ env.ARTIFACT_NAME }}.txt
-      
-      # - name: Upload Artifact
-      #   if: github.event_name == 'pull_request'
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ env.ARTIFACT_NAME }}
-      #     path: ${{ env.ARTIFACT_NAME }}.txt
+    steps:
+      - name: Checkout Cyclus
+        uses: actions/checkout@v4
+
+      - name: Install Cyclus Dependencies
+        id: cyclus-deps
+        run: |
+          brew install wget
+          export PATH=$HOME/conda/bin:$PATH 
+          wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
+          bash $HOME/miniconda.sh -b -p $HOME/conda
+          conda install -y conda-libmamba-solver && conda config --set solver libmamba
+          conda update -y --all
+          conda install -y \
+              clang_osx-64 \
+              clangxx_osx-64 \
+              cmake \
+              make \
+              git \
+              glib \
+              libxml2 \
+              libxmlpp-4.0 \
+              liblapack \
+              pkg-config \
+              coincbc \
+              boost \
+              hdf5 \
+              sqlite \
+              pcre \
+              setuptools \
+              pytest \
+              pytables \
+              pandas \
+              jinja2 \
+              cython \
+              websockets \
+              pprintpp \
+              pip
+          python install.py -j 4 --build-type Release
+          echo $HOME
+          pwd
+          export PATH=$HOME/.local/bin:$PATH
+          cyclus_unit_tests
+          echo "LIB"
+          ls $HOME/.local/lib
+          echo "LIB/CYCLUS"
+          ls $HOME/.local/lib/cyclus
+          echo "Site Packages"
+          ls $(python -m site --user-site)
+          echo "Site Packages/cyclus"
+          ls $(python -m site --user-site)/cyclus
+          python -c "import sys; print(sys.path)"
+          cd tests && python -m pytest --ignore test_main.py
+    
+     
