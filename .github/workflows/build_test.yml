@@ -244,6 +244,7 @@ jobs:
           ls $(python -m site --user-site)
           echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
+          python -c "import sys; print(sys.path)"
           cd tests && python -m pytest --ignore test_main.py
 
       - name: Checkout Cycamore
