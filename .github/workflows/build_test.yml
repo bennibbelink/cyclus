@@ -218,7 +218,7 @@ jobs:
             virtualenv
           virtualenv myenv
           source myenv/bin/activate
-          export PYTHONUSERBASE=${{ github.workspace }}/myenv
+          echo "PYTHONUSERBASE=${{ github.workspace }}/myenv" >> "$GITHUB_ENV"
           echo "PATH=$PATH" >> "$GITHUB_ENV"
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
           python -m site --user-site
@@ -270,7 +270,6 @@ jobs:
       - name: Install Cyclus Dependencies
         id: cyclus-deps
         run: |
-          brew install wget
           export PATH=$HOME/conda/bin:$PATH 
           wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
           bash $HOME/miniconda.sh -b -p $HOME/conda
