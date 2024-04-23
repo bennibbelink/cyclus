@@ -215,25 +215,21 @@ jobs:
             hdf5 \
             cbc \
             clp \
-            numpy
-          python -m venv --system-site-packages .venv
-          source .venv/bin/activate
-          python -m pip install --upgrade pip
+            virtualenv
+          virtualenv myenv
+          source myenv/bin/activate
           python -m pip install cython jinja2 pandas numpy setuptools pytest tables
 
       - name: Build Cyclus
         id: build-cyclus
         run: |
-          source .venv/bin/activate
+          source myenv/bin/activate
           python -m site --user-site
-          python install.py -j 3 --build-type Release
+          python install.py -j 3 --build-type Release -DPYTHON_SITE_PACKAGES=${{github.workspace}}/myenv/lib/python3.12/site-packages
             
       - name: Unit Tests
         id: cyclus-unit-tests
         run: |
-          source .venv/bin/activate
-          echo $HOME
-          pwd
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           echo "LIB"
@@ -241,9 +237,9 @@ jobs:
           echo "LIB/CYCLUS"
           ls $HOME/.local/lib/cyclus
           echo "Site Packages"
-          ls $(python -m site --user-site)
+          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages
           echo "Site Packages/cyclus"
-          ls $(python -m site --user-site)/cyclus
+          ls ${{github.workspace}}/myenv/lib/python3.12/site-packages/cyclus
           python -c "import sys; print(sys.path)"
           cd tests && python -m pytest --ignore test_main.py
 
