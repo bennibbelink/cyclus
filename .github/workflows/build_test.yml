@@ -285,7 +285,10 @@ jobs:
           export PATH=$HOME/conda/bin:$PATH 
           wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
           bash $HOME/miniconda.sh -b -p $HOME/conda
-          conda install -y conda-libmamba-solver && conda config --set solver libmamba
+          conda config --add channels conda-forge
+          conda update -n base -c defaults conda
+          conda install -y conda-libmamba-solver
+          conda config --set solver libmamba
           conda update -y --all
           conda install -y \
               clang_osx-64 \
