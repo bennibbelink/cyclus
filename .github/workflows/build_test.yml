@@ -216,12 +216,11 @@ jobs:
             hdf5 \
             cbc \
             clp
-          # python3 -m venv --system-site-packages $HOME/myenv
-          # source $HOME/myenv/bin/activate
-          python -m pip install --break-system-packages --user cython jinja2 pandas setuptools pytest tables
+          python -m pip install --break-system-packages --user cython jinja2 numpy pandas setuptools pytest tables
           python -c "import cython; print(cython.__file__)"
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
@@ -310,6 +309,7 @@ jobs:
           echo $HOME
           pwd
           export PATH=$HOME/.local/bin:$PATH
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
