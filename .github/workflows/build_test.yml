@@ -215,11 +215,11 @@ jobs:
             hdf5 \
             cbc \
             clp \
-            virtualenv
+            numpy
           brew reinstall python3 --force
-          python3 -m venv $HOME/myenv
+          python3 -m venv --system-site-packages $HOME/myenv
           source $HOME/myenv/bin/activate
-          python -m pip install cython jinja2 pandas numpy setuptools pytest tables
+          python -m pip install cython jinja2 pandas setuptools pytest tables
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
