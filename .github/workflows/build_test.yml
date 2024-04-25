@@ -209,6 +209,7 @@ jobs:
       - name: Install Cyclus Dependencies
         id: cyclus-deps
         run: |
+          mkdir -p $(python -m site --user-site)
           brew install \
             boost \
             libxml++@4 \
