@@ -163,7 +163,7 @@ if(Cython_FOUND)
           LIBRARY DESTINATION lib
           )
 
-        INSTALL(FILES "${CMAKE_INSTALL_PREFIX}/lib/${name}${suffix}" DESTINATION "${PYTHON_SITE_PACKAGES}" RENAME "${name}.sos")
+        INSTALL(FILES "${CMAKE_INSTALL_PREFIX}/lib/${name}${suffix}" DESTINATION "${PYTHON_SITE_PACKAGES}" RENAME "${name}.so")
 
         # Add symlinks to PYTHON_SITE_PACKAGES so python can find our cython modules
         # Python will only import libraries with .so extensions
