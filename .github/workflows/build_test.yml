@@ -217,7 +217,6 @@ jobs:
             cbc \
             clp
           python -m pip install --break-system-packages --user cython jinja2 numpy pandas setuptools pytest tables
-          python -c "import cython; print(cython.__file__)"
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
@@ -231,7 +230,6 @@ jobs:
           echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
-          python -c "import pymodule; print(pymodule.__file__)"
           cyclus_unit_tests
           cd tests && python -m pytest --ignore test_main.py
 
