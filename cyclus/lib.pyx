@@ -26,8 +26,8 @@ from collections import defaultdict
 from collections.abc import Mapping, Sequence, Iterable
 from importlib import import_module
 
-# cimport numpy as cnp
-# import pandas as pd
+cimport numpy as np
+import pandas as pd
 
 # local imports
 from cyclus cimport cpp_jsoncpp
@@ -47,12 +47,8 @@ from cyclus.typesystem cimport py_to_any, db_to_py, uuid_cpp_to_py, \
 
 
 # startup numpy
-#cnp.import_array()
-#cnp.import_ufunc()
-
-DTYPE = np.int64
-
-ctypedef cnp.int64_t DTYPE_t
+np.import_array()
+np.import_ufunc()
 
 
 cdef cpp_cyclus.Agent* dynamic_agent_ptr(object a):
