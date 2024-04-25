@@ -231,6 +231,7 @@ jobs:
           echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
+          python -c "import pymodule; print(pymodule.__file__)"
           cyclus_unit_tests
           cd tests && python -m pytest --ignore test_main.py
 
