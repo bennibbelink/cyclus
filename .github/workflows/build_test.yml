@@ -215,14 +215,13 @@ jobs:
             libxml++@4 \
             hdf5 \
             cbc \
-            clp \
-            numpy
-          python3 -m venv --system-site-packages $HOME/myenv
-          source $HOME/myenv/bin/activate
-          python -m pip install cython jinja2 pandas setuptools pytest tables
+            clp
+          # python3 -m venv --system-site-packages $HOME/myenv
+          # source $HOME/myenv/bin/activate
+          python -m pip install --break-system-packages --user cython jinja2 pandas setuptools pytest tables
+          which cython
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
-          cyclus_unit_tests
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
@@ -232,6 +231,7 @@ jobs:
           echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
+          cyclus_unit_tests
           cd tests && python -m pytest --ignore test_main.py
 
       - name: Checkout Cycamore
@@ -309,7 +309,6 @@ jobs:
           echo $HOME
           pwd
           export PATH=$HOME/.local/bin:$PATH
-          cyclus_unit_tests
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
@@ -319,6 +318,7 @@ jobs:
           echo "Site Packages/cyclus"
           ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
+          cyclus_unit_tests
           cd tests && python -m pytest --ignore test_main.py
     
      
