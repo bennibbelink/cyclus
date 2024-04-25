@@ -221,6 +221,7 @@ jobs:
           python install.py -j 3 --build-type Release
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
+          export PYTHONPATH=$(python -m site --user-site)
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
@@ -310,6 +311,7 @@ jobs:
           pwd
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
+          export PYTHONPATH=$(python -m site --user-site)
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
