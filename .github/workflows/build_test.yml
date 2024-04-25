@@ -216,7 +216,6 @@ jobs:
             cbc \
             clp \
             numpy
-          brew reinstall python3 --force
           python3 -m venv --system-site-packages $HOME/myenv
           source $HOME/myenv/bin/activate
           python -m pip install cython jinja2 pandas setuptools pytest tables
