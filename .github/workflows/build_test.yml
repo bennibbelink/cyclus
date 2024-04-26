@@ -231,7 +231,11 @@ jobs:
           ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
           cyclus_unit_tests
-          cd tests && python -m pytest --ignore test_main.py
+
+          cd tests
+          python -c "import pymodule; print(pymodule.__file__)"
+          python -c "import cyclus; print(cyclus.__file__)"
+          python -m pytest test_main.py
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
