@@ -229,13 +229,13 @@ jobs:
           export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
-          python -c "import sys; print(sys.path)"
+          python3 -c "import sys; print(sys.path)"
           cyclus_unit_tests
 
           cd tests
-          python -c "import pymodule; print(pymodule.__file__)"
-          python -c "import cyclus; print(cyclus.__file__)"
-          python -m pytest test_main.py
+          python3 -c "import pymodule; print(pymodule.__file__)"
+          python3 -c "import cyclus; print(cyclus.__file__)"
+          python3 -m pytest test_main.py
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
