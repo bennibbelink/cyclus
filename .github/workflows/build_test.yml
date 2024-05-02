@@ -221,10 +221,12 @@ jobs:
             libxml++@4 \
             hdf5 \
             cbc \
-            clp
+            clp \
+            python3
+          export PATH=$(brew --prefix python3)/bin:$PATH
           python3 -m venv .venv
           source .venv/bin/activate
-          python3 -m pip install --user cython jinja2 numpy pandas setuptools pytest tables
+          python3 -m pip install cython jinja2 numpy pandas setuptools pytest tables
           python3 install.py -j 3 ${SLOW_FLAG}
           export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
