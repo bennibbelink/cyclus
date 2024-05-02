@@ -223,14 +223,11 @@ jobs:
             cbc \
             clp \
             python3
-          brew install gnu-which
-          gwhich python
-          gwhich python3
-
-          python3 -m pip install --break-system-packages --user cython jinja2 numpy pandas setuptools pytest tables
-          python3 install.py -j 3 ${SLOW_FLAG}
+          python3 -m venv .venv
+          source .venv/bin/activate
+          python -m pip install cython jinja2 numpy pandas setuptools pytest tables
+          python install.py -j 3 ${SLOW_FLAG}
           export PATH=$HOME/.local/bin:$PATH
-          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
           echo "LIB"
           ls $HOME/.local/lib
           echo "LIB/CYCLUS"
