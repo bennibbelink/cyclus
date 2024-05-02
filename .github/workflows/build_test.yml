@@ -212,7 +212,7 @@ jobs:
           echo "SLOW_FLAG=--slow" >> "$GITHUB_ENV"
 
       - name: Build/Test Cyclus
-        id: cyclus-deps
+        id: build-cyclus
         run: |
           brew install \
             boost \
@@ -222,8 +222,8 @@ jobs:
             clp \
             python3
           export PATH=$(brew --prefix python3)/bin:$PATH
-          python3 -m venv .venv
-          source .venv/bin/activate
+          python3 -m venv ${{ github.workspace }}.venv
+          source ${{ github.workspace }}.venv/bin/activate
           mkdir -p $(python3 -m site --user-site)
           python3 -m pip install cython jinja2 numpy pandas setuptools pytest tables
           python3 install.py -j 3 ${SLOW_FLAG}
@@ -240,6 +240,21 @@ jobs:
           repository: cyclus/cycamore
           path: ${{ github.workspace }}/cycamore
 
+      - name: Build and Test Cycamore
+        id: build-cycamore
+        if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          cd ${{ github.workspace }}/cycamore
+          export PATH=$(brew --prefix python3):$PATH
+          source ${{ github.workspace }}/.venv/bin/activate
+          python3 install.py -j 3
+          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
+          export PATH=$HOME/.local/bin:$PATH
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
+          cycamore_unit_tests
+          cd tests && python3 -m pytest
+
       - name: Checkout Cymetric
         if: ${{ github.event_name == 'pull_request' && steps.build-cycamore.outcome == 'success' }}
         uses: actions/checkout@v4
@@ -247,78 +262,16 @@ jobs:
           repository: cyclus/cymetric
           path: ${{ github.workspace }}/cymetric
 
-
-  build-test-macos-conda:
-    strategy:
-      fail-fast: false
-      matrix:
-        osx_versions : [
-          macos-12,
-          macos-13,
-          # macos-14,
-        ]
-
-    runs-on: [ "${{ matrix.osx_versions }}" ]
-
-    steps:
-      - name: Checkout Cyclus
-        uses: actions/checkout@v4
-
-      - name: Install Cyclus Dependencies
-        id: cyclus-deps
+      - name: Build and Test Cycamore
+        id: build-cymetric
+        if: ${{ github.event_name == 'pull_request' && steps.build-cycamore.outcome == 'success' }}
+        continue-on-error: true
         run: |
-          export PATH=$HOME/conda/bin:$PATH 
-          wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
-          bash $HOME/miniconda.sh -b -p $HOME/conda
-          conda config --add channels conda-forge
-          conda update -n base -c defaults conda
-          conda install -y conda-libmamba-solver
-          conda config --set solver libmamba
-          conda update -y --all
-          conda create -n cyclusenv -y \
-              clang_osx-64 \
-              clangxx_osx-64 \
-              cmake \
-              make \
-              git \
-              glib \
-              libxml2 \
-              libxmlpp-4.0 \
-              liblapack \
-              pkg-config \
-              coincbc \
-              boost \
-              hdf5 \
-              sqlite \
-              pcre \
-              setuptools \
-              pytest \
-              pytables \
-              pandas \
-              numpy \
-              jinja2 \
-              cython \
-              websockets \
-              pprintpp \
-              pip
-          source $HOME/conda/etc/profile.d/conda.sh
-          conda activate cyclusenv
-          mkdir -p $(python -m site --user-site)
-          python install.py -j 4 ${SLOW_FLAG}
-          echo $HOME
-          pwd
+          cd ${{ github.workspace }}/cymetric
+          export PATH=$(brew --prefix python3):$PATH
+          source ${{ github.workspace }}/.venv/bin/activate
+          python3 install.py -j 3
+          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
-          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$HOME/.local/lib/cyclus
-          echo "LIB"
-          ls $HOME/.local/lib
-          echo "LIB/CYCLUS"
-          ls $HOME/.local/lib/cyclus
-          echo "Site Packages"
-          ls $(python -m site --user-site)
-          echo "Site Packages/cyclus"
-          ls $(python -m site --user-site)/cyclus
-          python -c "import sys; print(sys.path)"
-          cyclus_unit_tests
-          cd tests && python -m pytest --ignore test_main.py
-    
-     
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
+          cd tests && python3 -m pytest
