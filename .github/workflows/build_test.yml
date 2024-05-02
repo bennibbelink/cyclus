@@ -219,19 +219,21 @@ jobs:
             libxml++@4 \
             hdf5 \
             cbc \
-            clp \
-            python3
-          export PATH=$(brew --prefix python3)/bin:$PATH
-          python3 -m venv ${{ github.workspace }}.venv
-          source ${{ github.workspace }}.venv/bin/activate
-          mkdir -p $(python3 -m site --user-site)
-          python3 -m pip install cython jinja2 numpy pandas setuptools pytest tables
-          python3 install.py -j 3 ${SLOW_FLAG}
-          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
+            clp
+          python -m pip install --target $(python -m site --user-site) \
+            cython \
+            jinja2 \
+            numpy \
+            pandas \
+            setuptools \
+            pytest \
+            tables
+          python install.py -j 3 ${SLOW_FLAG}
+          export PYTHONPATH=$(python -m site --user-site)
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
           cyclus_unit_tests
-          cd tests && python3 -m pytest
+          cd tests && python -m pytest
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
@@ -246,14 +248,12 @@ jobs:
         continue-on-error: true
         run: |
           cd ${{ github.workspace }}/cycamore
-          export PATH=$(brew --prefix python3):$PATH
-          source ${{ github.workspace }}/.venv/bin/activate
-          python3 install.py -j 3
-          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
+          python install.py -j 3
+          export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
           cycamore_unit_tests
-          cd tests && python3 -m pytest
+          cd tests && python -m pytest
 
       - name: Checkout Cymetric
         if: ${{ github.event_name == 'pull_request' && steps.build-cycamore.outcome == 'success' }}
@@ -268,10 +268,8 @@ jobs:
         continue-on-error: true
         run: |
           cd ${{ github.workspace }}/cymetric
-          export PATH=$(brew --prefix python3):$PATH
-          source ${{ github.workspace }}/.venv/bin/activate
-          python3 install.py -j 3
-          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
+          python install.py -j 3
+          export PYTHONPATH=$(python -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
-          cd tests && python3 -m pytest
+          cd tests && python -m pytest
