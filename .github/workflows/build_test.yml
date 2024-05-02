@@ -225,7 +225,7 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           python -m pip install cython jinja2 numpy pandas setuptools pytest tables
-          python install.py -j 3 ${SLOW_FLAG} -DPYTHON_SITE_PACKAGES=.venv/lib/python3.12/site-packages
+          python install.py -j 3 ${SLOW_FLAG} -DPYTHON_SITE_PACKAGES=.venv/lib/python3.12/site-packages --prefix .venv
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib
           python -c "import sys; print(sys.path)"
