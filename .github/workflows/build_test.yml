@@ -222,12 +222,13 @@ jobs:
             hdf5 \
             cbc \
             clp
-          python -m venv .venv
-          source .venv/bin/activate
-          python -m pip install cython jinja2 numpy pandas setuptools pytest tables
-          python install.py -j 3 ${SLOW_FLAG} -DPYTHON_SITE_PACKAGES=.venv/lib/python3.12/site-packages --prefix .venv
+          # python -m venv .venv
+          # source .venv/bin/activate
+          python3 -m pip install --user cython jinja2 numpy pandas setuptools pytest tables
+          python3 install.py -j 3 ${SLOW_FLAG}
+          export PYTHONPATH=$(python3 -m site --user-site):$PYTHONPATH
           export PATH=$HOME/.local/bin:$PATH
-          export DYLD_LIBRARY_PATH=$HOME/.local/lib
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
           python -c "import sys; print(sys.path)"
           cyclus_unit_tests
 
