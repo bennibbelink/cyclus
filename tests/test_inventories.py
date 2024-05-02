@@ -3,7 +3,6 @@
 from numpy.testing import assert_array_equal
 import os
 import tables
-import numpy as np
 import sqlite3
 from tools import check_cmd
 from helper import tables_exist, find_ids, exit_times, \

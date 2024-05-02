@@ -26,7 +26,6 @@ from collections import defaultdict
 from collections.abc import Mapping, Sequence, Iterable
 from importlib import import_module
 
-cimport numpy as np
 import pandas as pd
 
 # local imports
@@ -44,11 +43,6 @@ from cyclus.typesystem cimport py_to_any, db_to_py, uuid_cpp_to_py, \
     str_py_to_cpp, std_string_to_py, std_vector_std_string_to_py, \
     bool_to_py, bool_to_cpp, int_to_py, std_set_std_string_to_py, uuid_cpp_to_py, \
     std_vector_std_string_to_py, C_IDS, blob_to_bytes, std_vector_int_to_py
-
-
-# startup numpy
-np.import_array()
-np.import_ufunc()
 
 
 cdef cpp_cyclus.Agent* dynamic_agent_ptr(object a):

@@ -907,9 +907,6 @@ cimport numpy as np
 import numpy as np
 np.import_array()
 np.import_ufunc()
-
-DTYPE = np.int64
-ctypedef np.int64_t DTYPE_t
 """.strip()
 
 CPP_TYPESYSTEM = JENV.from_string("""

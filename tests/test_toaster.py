@@ -179,7 +179,7 @@ def test_pyagent_attr_toaster_region():
     with open(iname, 'w') as f:
         json.dump(REGIONFILE, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = ".:$PYTHONPATH"
+    env['PYTHONPATH'] = "."
     s = subprocess.check_output(['cyclus', '-o', oname, iname],
                                 universal_newlines=True, env=env)
     info = s.split('=== Start AttrToasterRegion ===\n')[-1]

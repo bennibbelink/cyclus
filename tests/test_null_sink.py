@@ -3,7 +3,6 @@
 import os
 import sqlite3
 import pytest
-import numpy as np
 import tables
 from helper import tables_exist, find_ids, exit_times, \
     h5out, sqliteout, clean_outs, to_ary, which_outfile

@@ -3,9 +3,6 @@ from __future__ import print_function
 
 from numpy.testing import assert_array_equal
 import os
-import tables
-import numpy as np
-import hashlib
 
 from tools import check_cmd
 from helper import tables_exist, clean_outs, agent_time_series, \

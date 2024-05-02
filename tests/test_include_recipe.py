@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 
 import os
-import tables
-import numpy as np
 from tools import check_cmd
 from helper import tables_exist, find_ids, exit_times, \
     h5out, sqliteout, clean_outs, which_outfile

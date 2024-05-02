@@ -50,7 +50,7 @@ def test_bear_deploy():
     with open('bears.json', 'w') as f:
         json.dump(inputfile, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = ".:$PYTHONPATH"
+    env['PYTHONPATH'] = "."
     s = subprocess.check_output(['cyclus', '-o', 'bears.h5', 'bears.json'],
                                 universal_newlines=True, env=env)
     # test that the institution deploys a BearStore
