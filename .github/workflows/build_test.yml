@@ -225,19 +225,9 @@ jobs:
           python -m venv .venv
           source .venv/bin/activate
           python -m pip install cython jinja2 numpy pandas setuptools pytest tables
-          python install.py -j 3 ${SLOW_FLAG}
+          python install.py -j 3 ${SLOW_FLAG} -DPYTHON_SITE_PACKAGES=.venv/lib/python3.12/site-packages
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib
-          echo "LIB"
-          ls $HOME/.local/lib
-          echo "LIB/CYCLUS"
-          ls $HOME/.local/lib/cyclus
-          echo "Site packages pwd"
-          python -m site --user-site
-          echo "Site Packages"
-          ls $(python -m site --user-site)
-          echo "Site Packages/cyclus"
-          ls $(python -m site --user-site)/cyclus
           python -c "import sys; print(sys.path)"
           cyclus_unit_tests
 
