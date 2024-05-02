@@ -29,7 +29,7 @@ def test_pyagent_defaults():
     with open('default-toaster.json', 'w') as f:
         json.dump(DEFAULTFILE, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = "."
+    env['PYTHONPATH'] = ".:$PYTHONPATH"
     s = subprocess.check_output(['cyclus', '-o', 'default-toaster.h5', 'default-toaster.json'],
                                 universal_newlines=True, env=env)
     # tests default value set on facility
@@ -68,7 +68,7 @@ def test_pyagent_attr_toasters():
     with open(iname, 'w') as f:
         json.dump(ATTRFILE, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = "."
+    env['PYTHONPATH'] = ".:$PYTHONPATH"
     s = subprocess.check_output(['cyclus', '-o', oname, iname],
                                 universal_newlines=True, env=env)
     info = s.split('=== Start AttrToaster ===\n')[-1].split('\n=== End AttrToaster ===')[0]
@@ -123,7 +123,7 @@ def test_pyagent_attr_toaster_company():
     with open(iname, 'w') as f:
         json.dump(COMPANYFILE, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = "."
+    env['PYTHONPATH'] = ".:$PYTHONPATH"
     s = subprocess.check_output(['cyclus', '-o', oname, iname],
                                 universal_newlines=True, env=env)
     info = s.split('=== Start AttrToasterCompany ===\n')[-1]
@@ -179,7 +179,7 @@ def test_pyagent_attr_toaster_region():
     with open(iname, 'w') as f:
         json.dump(REGIONFILE, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = "."
+    env['PYTHONPATH'] = ".:$PYTHONPATH"
     s = subprocess.check_output(['cyclus', '-o', oname, iname],
                                 universal_newlines=True, env=env)
     info = s.split('=== Start AttrToasterRegion ===\n')[-1]

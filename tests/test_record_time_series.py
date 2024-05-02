@@ -26,7 +26,7 @@ def test_record_time_series():
     with open('dummy.json', 'w') as f:
         json.dump(inputfile, f)
     env = dict(os.environ)
-    env['PYTHONPATH'] = "."
+    env['PYTHONPATH'] = ".:$PYTHONPATH"
     s = subprocess.check_output(['cyclus', '-o', 'dummy.h5', 'dummy.json'], universal_newlines=True, env=env)
     assert ("The power is 10" in  s)
     if os.path.exists('dummy.json'):
