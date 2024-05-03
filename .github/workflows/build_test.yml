@@ -190,7 +190,7 @@ jobs:
           build-args: |
             rocky_version=${{ matrix.rocky_versions }}
 
-  build-test-macos-brew:
+  build-test-macos:
     strategy:
       fail-fast: false
       matrix:
@@ -219,8 +219,10 @@ jobs:
             libxml++@4 \
             hdf5 \
             cbc \
-            clp
-          python -m pip install --target $(python -m site --user-site) \
+            clp \
+            python3
+          export PATH=$(brew --prefix python3)/bin:$PATH
+          python3 -m pip install --target $(python -m site --user-site) \
             cython \
             jinja2 \
             numpy \
@@ -228,11 +230,11 @@ jobs:
             setuptools \
             pytest \
             tables
-          python install.py -j 3 ${SLOW_FLAG}
+          python3 install.py -j 3 ${SLOW_FLAG}
           export PATH=$HOME/.local/bin:$PATH
           export DYLD_LIBRARY_PATH=$HOME/.local/lib
           cyclus_unit_tests
-          cd tests && python -m pytest
+          cd tests && python3 -m pytest
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
