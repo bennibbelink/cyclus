@@ -229,9 +229,8 @@ jobs:
             pytest \
             tables
           python install.py -j 3 ${SLOW_FLAG}
-          export PYTHONPATH=$(python -m site --user-site)
           export PATH=$HOME/.local/bin:$PATH
-          export DYLD_LIBRARY_PATH=$HOME/.local/lib:$DYLD_LIBRARY_PATH
+          export DYLD_LIBRARY_PATH=$HOME/.local/lib
           cyclus_unit_tests
           cd tests && python -m pytest
 

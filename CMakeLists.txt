@@ -336,7 +336,6 @@ IF(NOT CYCLUS_DOC_ONLY)
         endif()
         include(UseCython)
         find_package (Python3 REQUIRED COMPONENTS NumPy)
-        SET(LIBS ${LIBS} Python3::NumPy)
         find_package(Jinja2 REQUIRED)
         find_package(Pandas REQUIRED)
 
