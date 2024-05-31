@@ -13,7 +13,7 @@ Since last release
 * Rely on ``python3`` in environment instead of ``python`` (#1747)
 * Remove ``pandas`` as build dependency (#1748)
 * Consistently use hyphens in ``install.py`` flags (#1748)
-* Define constants ``cy_large_double``, ``cy_large_int``, and ``cy_near_zero`` (#1757)
+* Define constants ``CY_LARGE_DOUBLE``, ``CY_LARGE_INT``, and ``CY_NEAR_ZERO`` (#1757)
 
 **Removed:**
 
