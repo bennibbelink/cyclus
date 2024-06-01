@@ -14,6 +14,7 @@ Since last release
 * Remove ``pandas`` as build dependency (#1748)
 * Consistently use hyphens in ``install.py`` flags (#1748)
 * Define constants ``CY_LARGE_DOUBLE``, ``CY_LARGE_INT``, and ``CY_NEAR_ZERO`` (#1757)
+* Material sell policy can package materials (#1749)
 
 **Removed:**
 
