@@ -17,7 +17,9 @@ PROJECT(CYCLUS VERSION 1.6.0)
 INCLUDE(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
 IF(COMPILER_SUPPORTS_CXX17)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    SET(CMAKE_CXX_STANDARD 17)
+    SET(CMAKE_CXX_STANDARD_REQUIRED True)
+    SET(CMAKE_CXX_EXTENSIONS OFF)
 ELSE()
     MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
 ENDIF()
@@ -87,6 +89,9 @@ IF(NOT CYCLUS_DOC_ONLY)
     # (but later on when installing)
     SET(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 
+    IF (APPLE)
+        SET(CMAKE_MACOSX_RPATH TRUE)
+    ENDIF(APPLE)
     SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib;${CMAKE_INSTALL_PREFIX}/lib/cyclus")
 
     # add the automatically determined parts of the RPATH
@@ -128,6 +133,18 @@ IF(NOT CYCLUS_DOC_ONLY)
         set(dynamicloadlib "windows_helper_functions.h")
     ELSEIF(APPLE)
         set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
+        # Capture the output of xcodebuild -version
+        execute_process(
+            COMMAND xcodebuild -version
+            OUTPUT_VARIABLE XCODE_VERSION_OUTPUT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        # Extract the version number from the output
+        string(REGEX MATCH "Xcode ([0-9]+\\.[0-9]+)" XCODE_VERSION_MATCH "${XCODE_VERSION_OUTPUT}")
+        set(XCODE_VERSION "${CMAKE_MATCH_1}")
+        if(XCODE_VERSION VERSION_GREATER "15.0")
+            set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ld_classic")
+        endif()
         set(suffix ".dylib")
         set(dynamicloadlib "unix_helper_functions.h")
     ELSE()
@@ -187,7 +204,7 @@ IF(NOT CYCLUS_DOC_ONLY)
     SET(LIBS ${LIBS} PkgConfig::LIBXMLXX)
     message("-- LibXML++ Include Dir: ${LIBXMLXX_INCLUDE_DIRS}")
     message("-- LibXML++ Libraries: ${LIBXMLXX_LIBRARIES}")
-    
+
     # find lapack and link to it
     FIND_PACKAGE(LAPACK REQUIRED)
     set(LIBS ${LIBS} ${LAPACK_LIBRARIES})
@@ -315,9 +332,7 @@ IF(NOT CYCLUS_DOC_ONLY)
     endif()
     message("-- PYTHON_EXECUTABLE: ${Python3_EXECUTABLE}")
     message("-- PYTHON_SITE_PACKAGES: ${PYTHON_SITE_PACKAGES}")
-    IF (NOT APPLE)
-        set(LIBS ${LIBS} ${Python3_LIBRARIES})
-    ENDIF (NOT APPLE)
+    set(LIBS ${LIBS} ${Python3_LIBRARIES})
 
     # Include the CMake script UseCython.cmake.  This defines add_cython_module().
     # Instruction for use can be found at the top of cmake/UseCython.cmake.
@@ -402,7 +417,7 @@ IF(NOT CYCLUS_DOC_ONLY)
     if(Cython_FOUND)
         ADD_SUBDIRECTORY("${CYCLUS_PYSOURCE_DIR}")
     endif(Cython_FOUND)
-    
+
     ##############################################################################################
     ####################################### end includes #########################################
     ##############################################################################################
