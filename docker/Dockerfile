@@ -56,14 +56,11 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
 ENV PATH /opt/conda/bin:$PATH
 
 RUN conda config --add channels conda-forge
-RUN conda update -n base -c defaults conda
+RUN conda update -n base -c conda-forge conda
 RUN conda install -y conda-libmamba-solver
 RUN conda config --set solver libmamba
-RUN conda install -y mamba
-RUN conda uninstall -y conda-libmamba-solver
-RUN conda config --set solver classic
 RUN conda update -y --all && \
-    mamba install -y \
+    conda install -y \
                gxx_linux-64 \
                gcc_linux-64 \
                cmake \
@@ -89,7 +86,7 @@ RUN conda update -y --all && \
                pprintpp \
                pip \
                && \
-    mamba install -y --force-reinstall libsqlite && \
+    conda install -y --force-reinstall libsqlite && \
     conda clean -y --all
 RUN mkdir -p `python3 -m site --user-site`
 ENV CC /opt/conda/bin/x86_64-conda_cos6-linux-gnu-gcc
