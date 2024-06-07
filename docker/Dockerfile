@@ -26,13 +26,13 @@ RUN apt update -y && apt install -y \
         libsqlite3-dev \
         libpcre2-dev \
         python3-setuptools \
-        python3-pytest \ 
+        python3-pytest \
         python3-tables \
         python3-pandas \
         python3-jinja2 \
         python3-pip \
         cython3 \
-        libwebsockets-dev 
+        libwebsockets-dev
 
 RUN apt install -y python3-pprintpp; exit 0
 RUN apt clean -y all
@@ -45,6 +45,7 @@ RUN apt update -y && apt install -y \
         wget \
         bzip2 \
         ca-certificates \
+        libexpat-dev \
     && apt clean -y all
 
 RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
