@@ -132,19 +132,8 @@ IF(NOT CYCLUS_DOC_ONLY)
         set(suffix ".dll")
         set(dynamicloadlib "windows_helper_functions.h")
     ELSEIF(APPLE)
-        set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
-        # Capture the output of xcodebuild -version
-        execute_process(
-            COMMAND xcodebuild -version
-            OUTPUT_VARIABLE XCODE_VERSION_OUTPUT
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        # Extract the version number from the output
-        string(REGEX MATCH "Xcode ([0-9]+\\.[0-9]+)" XCODE_VERSION_MATCH "${XCODE_VERSION_OUTPUT}")
-        set(XCODE_VERSION "${CMAKE_MATCH_1}")
-        if(XCODE_VERSION VERSION_GREATER "15.0")
-            set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -ld_classic")
-        endif()
+        set(CMAKE_LINKER_TYPE LLD)
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
         set(suffix ".dylib")
         set(dynamicloadlib "unix_helper_functions.h")
     ELSE()

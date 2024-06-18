@@ -169,6 +169,7 @@ jobs:
             clangxx_osx-${ARM}64 \
             cmake \
             make \
+            ldd \
             git \
             glib \
             libxml2 \
