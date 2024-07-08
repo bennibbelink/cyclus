@@ -63,7 +63,27 @@ xmlpp::Document* XMLParser::Document() {
   // This adds the capability to have nice include semantics
   bool generate_xinclude_nodes = true;
   bool fixup_base_uris = false;
-  doc->process_xinclude(generate_xinclude_nodes, fixup_base_uris);
+  #if LIBXMLXX_MAJOR_VERSION < 2
+    doc->process_xinclude(generate_xinclude_nodes);
+  #elif LIBXMLXX_MAJOR_VERSION == 2
+    #if LIBXMLXX_MINOR_VERSION < 42
+      doc->process_xinclude(generate_xinclude_nodes);
+    #else
+      doc->process_xinclude(generate_xinclude_nodes, fixup_base_uris);
+    #endif
+  #else
+    doc->process_xinclude(generate_xinclude_nodes, fixup_base_uris);
+  #endif
+  // This removes the stupid xml:base attribute that including adds,
+  // but which is unvalidatable. The web is truly cobbled together
+  // by a race of evil gnomes. After libxml++ v2.42.0 process_xinclude 
+  // supports the fixup_base_uris which does this removal for us
+  xmlpp::Element* root = doc->get_root_node();
+  NodeSet have_base = root->find("//*[@xml:base]");
+  NodeSet::iterator it = have_base.begin();
+  for (; it != have_base.end(); ++it) {
+    reinterpret_cast<xmlpp::Element*>(*it)->remove_attribute("base", "xml");
+  }
   return doc;
 }
 
