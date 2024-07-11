@@ -148,9 +148,10 @@ if(Cython_FOUND)
 
         ADD_LIBRARY(${name} ${_cc_file})
         SET(CythonModuleSrc ${CythonModuleSrc} ${_cc_file})
-        SET_TARGET_PROPERTIES(${name} PROPERTIES 
+        SET_TARGET_PROPERTIES(${name} PROPERTIES
           OUTPUT_NAME "${name}"
           PREFIX ""
+          LINK_FLAGS "-undefined dynamic_lookup -flat_namespace"
           INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
           INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
           )
@@ -242,6 +243,7 @@ ADD_LIBRARY(cyclus ${CYCLUS_CORE_SRC})
 
 SET_TARGET_PROPERTIES(cyclus
     PROPERTIES
+    LINK_FLAGS "-undefined dynamic_lookup -flat_namespace"
     INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
     INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
     )

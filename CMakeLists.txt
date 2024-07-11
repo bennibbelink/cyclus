@@ -24,7 +24,9 @@ SET(CYCLUS_PYTHON_NEAR_ZERO "1e-08")
 INCLUDE(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
 IF(COMPILER_SUPPORTS_CXX17)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+    SET(CMAKE_CXX_STANDARD 17)
+    SET(CMAKE_CXX_STANDARD_REQUIRED True)
+    SET(CMAKE_CXX_EXTENSIONS OFF)
 ELSE()
     MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
 ENDIF()
@@ -134,7 +136,9 @@ IF(NOT CYCLUS_DOC_ONLY)
         set(suffix ".dll")
         set(dynamicloadlib "windows_helper_functions.h")
     ELSEIF(APPLE)
-        set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
+        # set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
+        # set(CMAKE_EXE_LINKER_FLAGS "-undefined dynamic_lookup")
+        # add_link_options(-undefined dynamic_lookup)
         set(suffix ".dylib")
         set(dynamicloadlib "unix_helper_functions.h")
     ELSE()
@@ -194,7 +198,7 @@ IF(NOT CYCLUS_DOC_ONLY)
     SET(LIBS ${LIBS} PkgConfig::LIBXMLXX)
     message("-- LibXML++ Include Dir: ${LIBXMLXX_INCLUDE_DIRS}")
     message("-- LibXML++ Libraries: ${LIBXMLXX_LIBRARIES}")
-    
+
     # find lapack and link to it
     FIND_PACKAGE(LAPACK REQUIRED)
     set(LIBS ${LIBS} ${LAPACK_LIBRARIES})
@@ -208,18 +212,19 @@ IF(NOT CYCLUS_DOC_ONLY)
     MESSAGE("-- Found SQLite3 Libraries: ${SQLite3_LIBRARIES}")
 
     # Find HDF5
-    FIND_PACKAGE(HDF5 REQUIRED COMPONENTS HL)
+    SET(HDF5_FIND_DEBUG True)
+    FIND_PACKAGE(HDF5 REQUIRED HL)
     ADD_DEFINITIONS(${HDF5_DEFINITIONS})
     if(NOT HDF5_LIBRARY_DIRS STREQUAL "")
-      set(LIBS ${LIBS} ${HDF5_LIBRARIES})
-      link_directories(${HDF5_LIBRARY_DIRS})
+        set(LIBS ${LIBS} ${HDF5_LIBRARIES})
+        link_directories(${HDF5_LIBRARY_DIRS})
     endif()
-    set(LIBS ${LIBS} ${HDF5_C_LIBRARIES} ${HDF5_C_HL_LIBRARIES})
+    set(LIBS ${LIBS} ${HDF5_LIBRARIES})
     MESSAGE("--    HDF5 Root: ${HDF5_ROOT}")
-    MESSAGE("--    HDF5 Include directory: ${HDF5_INCLUDE_DIR}")
-    MESSAGE("--    HDF5 Library directories: ${HDF5_LIBRARY_DIRS}")
-    MESSAGE("--    HDF5 Libraries: ${HDF5_C_LIBRARIES}")
-    MESSAGE("--    HDF5 High Level Libraries: ${HDF5_C_HL_LIBRARIES}")
+    MESSAGE("--    HDF5 Version: ${HDF5_VERSION}")
+    MESSAGE("--    HDF5 Include directory: ${HDF5_INCLUDE_DIRS}")
+    MESSAGE("--    HDF5 Libraries: ${HDF5_LIBRARIES}")
+    MESSAGE("--    HDF5 High Level Libraries: ${HDF5_HL_LIBRARIES}")
 
     # Include the boost header files and the program_options library
     # Please be sure to use Boost rather than BOOST.
@@ -409,7 +414,7 @@ IF(NOT CYCLUS_DOC_ONLY)
     ADD_SUBDIRECTORY("${CYCLUS_AGENTS_DIR}")
     ADD_SUBDIRECTORY("${CYCLUS_CLI_DIR}")
     ADD_SUBDIRECTORY("${CYCLUS_CMAKE_DIR}")
-    
+
     ##############################################################################################
     ####################################### end includes #########################################
     ##############################################################################################

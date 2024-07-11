@@ -1,5 +1,7 @@
 INCLUDE_DIRECTORIES(BEFORE ${CYCLUS_CORE_INCLUDE_DIRS})
-
+if(APPLE)
+  add_link_options(-undefined dynamic_lookup -flat_namespace)
+endif(APPLE)
 install_cyclus_standalone("TestAgent" "test_agent" "tests")
 install_cyclus_standalone("TestFacility" "test_facility" "tests")
 install_cyclus_standalone("TestInst" "test_inst" "tests")
