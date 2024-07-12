@@ -34,10 +34,10 @@ jobs:
     runs-on: ["${{ matrix.macos_versions }}"]
 
     steps:
-      # - name: Setup XCode
-      #   uses: maxim-lobanov/setup-xcode@v1
-      #   with:
-      #     xcode-version: latest-stable
+      - name: Setup XCode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
 
       - name: Checkout Cyclus
         uses: actions/checkout@v4
@@ -66,7 +66,6 @@ jobs:
           mamba install -y \
             c-compiler \
             cxx-compiler \
-            pthread-stubs \
             cmake \
             make \
             git \
@@ -93,7 +92,7 @@ jobs:
           export CXX=$(which clang++)
           export CPP=$(which clang-cpp)
           mkdir -p $(python3 -m site --user-site)
-          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}
+          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX} -DCMAKE_CXX_FLAGS="-pthread"
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           cd tests && python3 -m pytest --ignore test_main.py
