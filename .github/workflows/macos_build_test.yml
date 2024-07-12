@@ -80,12 +80,9 @@ jobs:
             websockets \
             pprintpp \
             pip
-          which clang
-          which clang++
-          which clang-cpp
           export CC=$(which clang)
           export CXX=$(which clang++)
-          export CPP=${which clang-cpp}
+          export CPP=$(which clang-cpp)
           python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
