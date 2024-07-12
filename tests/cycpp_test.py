@@ -6,7 +6,7 @@ import tempfile
 import pytest
 
 from collections import OrderedDict
-from subprocess import check_output, STDOUT
+from subprocess import Popen, PIPE, STDOUT
 
 
 cycdir = os.path.dirname(os.path.dirname(__file__))
@@ -1187,5 +1187,5 @@ def test_integration():
         cmd = 'cycpp.py {} -o {} --cpp-path `which $CXX`'.format(inf, outf.name)
     else:
         cmd = 'cycpp.py {} -o {} --cpp-path `which g++`'.format(inf, outf.name)
-    p = check_output(cmd, shell=True, stderr=STDOUT)
-    assert '' ==  p.decode()
+    p = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+    assert '' ==  p.stdout.read().decode()
