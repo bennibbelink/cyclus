@@ -53,10 +53,11 @@ jobs:
         id: build-cyclus
         shell: bash -el {0}
         run: |
-          echo $PATH
-          mamba update -n base conda mamba && \
-          mamba update -y python --no-pin && \
-          mamba update -y --all && \
+          conda init
+          source $HOME/.bash_profile
+          mamba update -n base conda mamba
+          mamba update -y python --no-pin
+          mamba update -y --all
           mamba install -y \
             c-compiler \
             cxx-compiler \
