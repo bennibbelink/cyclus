@@ -42,19 +42,21 @@ jobs:
         run: |
           echo "SLOW_FLAG=--slow" >> "$GITHUB_ENV"
 
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          miniforge-version: "latest"
-          miniforge-variant: "Mambaforge"
-          conda-solver: "libmamba"
-          auto-update-conda: true
-          channels: conda-forge
+      - name: Setup Miniforge
+        run: |
+          echo 'PATH=$HOME/conda/bin:$PATH' >> "$GITHUB_ENV" && \
+          wget --quiet "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" -O ~/miniforge.sh && \
+          /bin/bash $HOME/miniforge.sh -b -p $HOME/conda && \
+          rm $HOME/miniforge.sh
 
       - name: Build and Test Cyclus
         id: build-cyclus
         shell: bash -el {0}
         run: |
+          echo $PATH
+          mamba update -n base conda mamba && \
+          mamba update -y python --no-pin && \
+          mamba update -y --all && \
           mamba install -y \
             c-compiler \
             cxx-compiler \
