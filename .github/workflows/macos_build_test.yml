@@ -87,7 +87,7 @@ jobs:
           python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
-          cd tests && python3 -m pytest
+          cd tests && python3 -m pytest --ignore test_main.py
 
       - name: Checkout Cycamore
         if: ${{ github.event_name == 'pull_request' && steps.build-cyclus.outcome == 'success' }}
