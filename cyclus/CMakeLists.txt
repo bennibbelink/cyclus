@@ -30,17 +30,15 @@ set_source_files_properties(${CYCLUS_CYTHON_FILES}
 get_property(inc_dirs DIRECTORY PROPERTY INCLUDE_DIRECTORIES)
 message("-- Include paths for ${CMAKE_CURRENT_SOURCE_DIR}: ${inc_dirs}")
 
-if(APPLE)
-    SET(APPLE_LINK_FLAGS "-undefined dynamic_lookup -flat_namespace")
-endif(APPLE)
-
 foreach(file ${CYCLUS_CYTHON_FILES})
     get_filename_component(name ${file} NAME_WE)
     set(targ "py_${name}_")
     cython_add_module(${targ} ${file})
     target_link_libraries(${targ} PRIVATE dl ${LIBS} cyclus)
+    if(APPLE)
+        set_target_properties(${targ} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup -flat_namespace")
+    endif(APPLE)
     set_target_properties(${targ} PROPERTIES LINKER_LANGUAGE CXX
-                                            LINK_FLAGS ${APPLE_LINK_FLAGS}
                                             OUTPUT_NAME ${name}
                                             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
     # the following install is needed so that CMake sets the correct RPATH for the

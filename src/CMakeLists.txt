@@ -146,16 +146,15 @@ if(Cython_FOUND)
             message(FATAL_ERROR "Cython compilation of ${file} failed!")
         ENDIF()
 
-        IF (APPLE)
-            SET(APPLE_LINK_FLAGS "-undefined dynamic_lookup -flat_namespace")
-        ENDIF(APPLE)
-
         ADD_LIBRARY(${name} ${_cc_file})
         SET(CythonModuleSrc ${CythonModuleSrc} ${_cc_file})
+        IF(APPLE)
+            SET_TARGET_PROPERTIES(${name} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup -flat_namespace")
+        ENDIF(APPLE)
         SET_TARGET_PROPERTIES(${name} PROPERTIES
           OUTPUT_NAME "${name}"
           PREFIX ""
-          LINK_FLAGS ${APPLE_LINK_FLAGS}
+          ${APPLE_LINK_FLAGS}
           INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
           INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
           )
