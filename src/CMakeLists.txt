@@ -146,12 +146,16 @@ if(Cython_FOUND)
             message(FATAL_ERROR "Cython compilation of ${file} failed!")
         ENDIF()
 
+        IF (APPLE)
+            SET(APPLE_LINK_FLAGS "-undefined dynamic_lookup -flat_namespace")
+        ENDIF(APPLE)
+
         ADD_LIBRARY(${name} ${_cc_file})
         SET(CythonModuleSrc ${CythonModuleSrc} ${_cc_file})
         SET_TARGET_PROPERTIES(${name} PROPERTIES
           OUTPUT_NAME "${name}"
           PREFIX ""
-          LINK_FLAGS "-undefined dynamic_lookup -flat_namespace"
+          LINK_FLAGS ${APPLE_LINK_FLAGS}
           INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
           INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
           )
@@ -249,12 +253,21 @@ ADD_LIBRARY(cyclus ${CYCLUS_CORE_SRC})
 
 SET_TARGET_PROPERTIES(cyclus
     PROPERTIES
-    # LINK_FLAGS "-undefined dynamic_lookup -flat_namespace"
     INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
     INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
     )
 
-TARGET_LINK_LIBRARIES(cyclus dl ${LIBS} ${Python3_LIBRARIES})
+# We always need to explicitly link against Python3_LIBRARIES because the
+# intepreter is embedded in this target.  On Linux Python3_LIBRARIES is
+# already included in LIBS, on APPLE we need to **only** explicitly link
+# this target.
+IF(APPLE)
+    TARGET_LINK_LIBRARIES(cyclus dl ${LIBS} ${Python3_LIBRARIES})
+ELSE()
+    TARGET_LINK_LIBRARIES(cyclus dl ${LIBS})
+ENDIF(APPLE)
+
+
 
 INSTALL(
     TARGETS cyclus
