@@ -88,8 +88,9 @@ jobs:
           export CC=$CONDA_PREFIX/bin/clang
           export CXX=$CONDA_PREFIX/bin/clang++
           export CPP=$CONDA_PREFIX/bin/clang-cpp
+          export CONDA_BUILD_SYSROOT=$(xcrun --show-sdk-path)
           mkdir -p $(python3 -m site --user-site)
-          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}
+          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX} -DCMAKE_OSX_SYSROOT=${CONDA_BUILD_SYSROOT}
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           cd tests && python3 -m pytest --ignore test_main.py
