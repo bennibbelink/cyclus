@@ -89,7 +89,7 @@ jobs:
           export CXX=$(which clang++)
           export CPP=$(which clang-cpp)
           mkdir -p $(python3 -m site --user-site)
-          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}"
+          python3 install.py -j 3 --allow-milps ${SLOW_FLAG} --hdf5_root ${CONDA_PREFIX}
           export PATH=$HOME/.local/bin:$PATH
           cyclus_unit_tests
           cd tests && python3 -m pytest --ignore test_main.py
