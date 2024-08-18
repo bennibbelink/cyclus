@@ -5,6 +5,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <array>
 #include <boost/version.hpp>
 
 #if BOOST_VERSION / 100 % 1000 <= 67
@@ -643,66 +644,7 @@ inline bool CmpConds(T* x, std::vector<Cond*>* conds) {
 /// The reason why this is public is that it needs to be directly writable
 /// from buffers coming from HDF5. In the future, this really should just be
 /// a std::array.
-class Digest {
- public:
-  unsigned int val[CYCLUS_SHA1_NINT];
-
-  /// Casts the value of this digest to a vector of the templated type.
-  template <typename T>
-  inline std::vector<T> cast() const {
-    std::vector<T> rtn = std::vector<T>(CYCLUS_SHA1_NINT);
-    for (unsigned int i = 0; i < CYCLUS_SHA1_NINT; ++i)
-      rtn[i] = static_cast<T>(val[i]);
-    return rtn;
-  }
-
-  // operators
-  inline std::ostream& operator<<(std::ostream& out) const {
-    return out << "[" << val[0] << ", " << val[1] << ", " <<  val[2] << \
-                  ", " << val[3] << ", " << val[4] << "]";
-  }
-
-  inline bool operator< (const cyclus::Digest& rhs) const {
-    bool rtn = false;
-    for (int i = 0; i < CYCLUS_SHA1_NINT; ++i) {
-      if (val[i] < rhs.val[i]) {
-        rtn = true;
-        break;
-      } else if (val[i] > rhs.val[i]) {
-        rtn = false;
-        break;
-      }  // else they are equal and we need to check the next index
-    }
-    return rtn;
-  }
-
-  inline bool operator> (const cyclus::Digest& rhs) const {
-    return !operator<(rhs) && !operator==(rhs);
-  }
-
-  inline bool operator<=(const cyclus::Digest& rhs) const {
-    return !operator>(rhs);
-  }
-
-  inline bool operator>=(const cyclus::Digest& rhs) const {
-    return !operator<(rhs);
-  }
-
-  inline bool operator==(const cyclus::Digest& rhs) const {
-    bool rtn = true;
-    for (int i = 0; i < CYCLUS_SHA1_NINT; ++i) {
-      if (val[i] != rhs.val[i]) {
-        rtn = false;
-        break;
-      }  // else they are equal and we need to check the next index.
-    }
-    return rtn;
-  }
-
-  inline bool operator!=(const cyclus::Digest& rhs) const {
-    return !operator==(rhs);
-  }
-};
+using Digest = std::array<unsigned int, 5>;
 
 class Sha1 {
  public:
@@ -1086,7 +1028,7 @@ class Sha1 {
 
   Digest digest() {
     Digest d;
-    hash_.get_digest(d.val);
+    hash_.get_digest(d);
     return d;
   }
 
