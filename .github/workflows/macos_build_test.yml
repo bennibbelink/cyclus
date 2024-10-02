@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: --slow flag if on ARM
-        if: ${{ matrix.macos_versions == 'macos-14' }}
+        if: ${{ matrix.macos_versions == 'macos-14' || matrix.macos_versions == 'macos-15' }}
         run: |
           echo "SLOW_FLAG=--slow" >> "$GITHUB_ENV"
 
