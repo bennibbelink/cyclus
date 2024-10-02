@@ -66,8 +66,7 @@ jobs:
         shell: bash -el {0}
         run: |
           mamba install -y \
-            c-compiler \
-            cxx-compiler \
+            compilers \
             cmake \
             make \
             git \
