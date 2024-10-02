@@ -108,6 +108,7 @@ jobs:
         id: build-cycamore
         if: ${{ steps.build-cyclus.outcome == 'success' }}
         continue-on-error: true
+        shell: bash -el {0}
         run: |
           cd ${{ github.workspace }}/cycamore
           python3 install.py -j 3 --allow-milps
@@ -126,6 +127,7 @@ jobs:
         id: build-cymetric
         if: ${{ steps.build-cycamore.outcome == 'success' }}
         continue-on-error: true
+        shell: bash -el {0}
         run: |
           cd ${{ github.workspace }}/cymetric
           python3 -m pip install --target $(python3 -m site --user-site) .
