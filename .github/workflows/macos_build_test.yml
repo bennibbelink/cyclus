@@ -56,7 +56,6 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           miniforge-version: "latest"
-          miniforge-variant: "Mambaforge"
           conda-solver: "libmamba"
           auto-update-conda: true
           channels: conda-forge
