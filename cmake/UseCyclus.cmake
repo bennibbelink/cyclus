@@ -369,7 +369,7 @@ macro(cyclus_platform)
       set(_plat "${_plat}-NOTFOUND")
     endif()
     # then set architecture
-    if (CMAKE_SYSTEM_PROCESSOR MATCHES "arm64")
+    if (CMAKE_HOST_SYSTEM_PROCESSOR MATCHES "arm64")
       set(_plat "${_plat}-arm64")
     endif()
     set(CYCLUS_PLATFORM "${_plat}")
