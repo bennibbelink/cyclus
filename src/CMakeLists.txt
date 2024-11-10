@@ -149,33 +149,38 @@ if(Cython_FOUND)
         ENDIF()
 
         ADD_LIBRARY(${name} ${_cc_file})
+        ADD_LIBRARY(${name}_python ${_cc_file})
         SET(CythonModuleSrc ${CythonModuleSrc} ${_cc_file})
         SET_TARGET_PROPERTIES(${name} PROPERTIES
           OUTPUT_NAME "${name}"
           PREFIX ""
           INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
           INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
-          )
+        )
+         SET_TARGET_PROPERTIES(${name}_python PROPERTIES
+          OUTPUT_NAME "${name}"
+          PREFIX ""
+          SUFFIX ".so"
+          INSTALL_NAME_DIR "${PYTHON_SITE_PACKAGES}/lib"
+          INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
+        )
         IF (CYTHON_VERSION_MAJOR GREATER_EQUAL 3)
             TARGET_COMPILE_DEFINITIONS(${name} PRIVATE NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION)
+            TARGET_COMPILE_DEFINITIONS(${name}_python PRIVATE NPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION)
         ENDIF()
 
         TARGET_LINK_LIBRARIES(${name} dl ${NoCythonLibs})
+        TARGET_LINK_LIBRARIES(${name}_python dl ${NoCythonLibs})
 
         INSTALL(
           TARGETS ${name}
           LIBRARY DESTINATION lib
-          )
-        # Add symlinks to PYTHON_SITE_PACKAGES so python can find our cython modules
-        # Python will only import libraries with .so extensions
-        # so we hardcode the symlink with .so even on APPLE
-        INSTALL(CODE "
-            EXECUTE_PROCESS(
-                COMMAND ${CMAKE_COMMAND} -E create_symlink
-                ${CMAKE_INSTALL_PREFIX}/lib/${name}${suffix}
-                ${PYTHON_SITE_PACKAGES}/${name}.so
-            )"
-          )
+        )
+
+        INSTALL(
+          TARGETS ${name}_python
+          LIBRARY DESTINATION ${PYTHON_SITE_PACKAGES}
+        )
 
         copy_when_diff(${_generated_h} ${_h_file})
         copy_when_diff(${_generated_api} ${_api_file})
