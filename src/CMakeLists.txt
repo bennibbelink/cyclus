@@ -161,7 +161,7 @@ if(Cython_FOUND)
           OUTPUT_NAME "${name}"
           PREFIX ""
           SUFFIX ".so"
-          INSTALL_NAME_DIR "${PYTHON_SITE_PACKAGES}/lib"
+          INSTALL_NAME_DIR "${PYTHON_SITE_PACKAGES}"
           INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib"
         )
         IF (CYTHON_VERSION_MAJOR GREATER_EQUAL 3)
