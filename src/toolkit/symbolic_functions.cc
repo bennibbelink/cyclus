@@ -9,7 +9,7 @@ namespace cyclus {
 namespace toolkit {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-double LinearFunction::value(double x) {
+long double LinearFunction::value(double x) {
   return slope_ * x + intercept_;
 }
 
@@ -21,7 +21,7 @@ std::string LinearFunction::Print() {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-double ExponentialFunction::value(double x) {
+long double ExponentialFunction::value(double x) {
   return constant_ * exp(exponent_ * x) + intercept_;
 }
 
@@ -34,7 +34,7 @@ std::string ExponentialFunction::Print() {
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-double PiecewiseFunction::value(double x) {
+long double PiecewiseFunction::value(double x) {
   double ret;
   if (functions_.empty() || (x < functions_.front().xoffset)) {
     ret = 0.0;

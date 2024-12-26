@@ -23,7 +23,7 @@ class SymFunction {
   virtual ~SymFunction() {}
 
   /// Base class must define how to calculate demand (dbl argument)
-  virtual double value(double x) = 0;
+  virtual long double value(double x) = 0;
 
   /// Every function must print itself
   virtual std::string Print() = 0;
@@ -39,7 +39,7 @@ class LinearFunction : public SymFunction {
   LinearFunction(double s, double i = 0.0) : slope_(s), intercept_(i) {}
 
   /// Evaluation for an double argument
-  virtual double value(double x);
+  virtual long double value(double x);
 
   /// Print a string of the function
   virtual std::string Print();
@@ -66,20 +66,20 @@ class ExponentialFunction : public SymFunction {
         intercept_(i) {}
 
   /// Evaluation for a double argument
-  virtual double value(double x);
+  virtual long double value(double x);
 
   /// Print a string of the function
   virtual std::string Print();
 
  private:
   /// The constant factor
-  double constant_;
+  long double constant_;
 
   /// The exponent multiplier
-  double exponent_;
+  long double exponent_;
 
   /// The intercept
-  double intercept_;
+  long double intercept_;
 };
 
 /// Piecewise function
@@ -99,7 +99,7 @@ class PiecewiseFunction : public SymFunction {
 
  public:
   /// Evaluation for an double argument
-  virtual double value(double x);
+  virtual long double value(double x);
 
   /// Print a string of the function
   virtual std::string Print();
