@@ -73,13 +73,13 @@ class ExponentialFunction : public SymFunction {
 
  private:
   /// The constant factor
-  double constant_;
+  double constant_ = 0;
 
   /// The exponent multiplier
-  double exponent_;
+  double exponent_ = 0;
 
   /// The intercept
-  double intercept_;
+  double intercept_ = 0;
 };
 
 /// Piecewise function
@@ -94,7 +94,7 @@ class PiecewiseFunction : public SymFunction {
           yoffset(yoff_) {}
 
     SymFunction::Ptr function;
-    double xoffset, yoffset;
+    double xoffset = 0, yoffset = 0;
   };
 
  public:
