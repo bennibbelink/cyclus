@@ -22,7 +22,13 @@ std::string LinearFunction::Print() {
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 double ExponentialFunction::value(double x) {
-  return constant_ * std::exp(exponent_ * x) + intercept_;
+  double exp_input = exponent_ * x;
+  if (exp_input > std::numeric_limits<double>::max_exponent) {
+    return std::numeric_limits<double>::infinity();
+  } else if (exp_input < std::numeric_limits<double>::min_exponent) {
+    return intercept_;  // exp(-inf) is 0, so we return intercept_
+  }
+  return constant_ * std::exp(exp_input) + intercept_;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
