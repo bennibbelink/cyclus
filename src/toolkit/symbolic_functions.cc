@@ -40,10 +40,11 @@ double PiecewiseFunction::value(double x) {
     ret = 0.0;
   } else {
     std::list<PiecewiseFunctionInfo>::iterator f = functions_.begin();
-    while (f != functions_.end() && (x >= f->xoffset)) {
-      ++f;  // exceeds search by 1
+    std::list<PiecewiseFunctionInfo>::iterator next = std::next(f);
+    while (next != functions_.end() && (x >= next->xoffset)) {
+      f = next;
+      ++next;
     }
-    --f;  // go back to the correct one
     ret = f->function->value(x - f->xoffset) + f->yoffset;
   }
   return ret;
