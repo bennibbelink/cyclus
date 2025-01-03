@@ -152,11 +152,12 @@ class PoissonDoubleDist : public DoubleDistribution {
   public:
     typedef boost::shared_ptr<PoissonDoubleDist> Ptr;
 
-    PoissonDoubleDist(double mean) 
-      : mean_(mean), dist(mean_) {
+    PoissonDoubleDist(double mean) {
       if (mean_ < 0) {
         throw ValueError("Mean must be positive");
       }
+      mean_ = mean;
+      dist = boost::random::poisson_distribution<>(mean_);
     };
     virtual double sample() { return dist(RandomNumberGenerator::gen_); }
     virtual double mean() { return dist.mean(); }
@@ -303,10 +304,12 @@ class PoissonIntDist : public IntDistribution {
   public:
     typedef boost::shared_ptr<PoissonIntDist> Ptr;
 
-    PoissonIntDist(double mean) : dist(mean_) {
+    PoissonIntDist(double mean) {
       if (mean_ < 0) {
         throw ValueError("Mean must be positive");
       }
+      mean_ = mean;
+      dist = boost::random::poisson_distribution<>(mean_);
     };
     virtual int sample() { return dist(RandomNumberGenerator::gen_); }
     virtual double mean() { return dist.mean(); }
