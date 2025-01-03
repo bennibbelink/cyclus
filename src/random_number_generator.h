@@ -152,7 +152,8 @@ class PoissonDoubleDist : public DoubleDistribution {
   public:
     typedef boost::shared_ptr<PoissonDoubleDist> Ptr;
 
-    PoissonDoubleDist(double mean) : dist(mean_) {
+    PoissonDoubleDist(double mean) 
+      : mean_(mean), dist(mean_) {
       if (mean_ < 0) {
         throw ValueError("Mean must be positive");
       }
